@@ -1,24 +1,47 @@
+# Logs
 *.log
+storage/logs/*
+npm-debug.log
+yarn-error.log
+
+# OS / Editor files
 .DS_Store
+Thumbs.db
+/.idea
+/.vscode
+/.fleet
+/.nova
+/.zed
+*.sublime-project
+*.sublime-workspace
+
+# Environment & config
 .env
+.env.*
 .env.backup
 .env.production
+auth.json
+Homestead.json
+Homestead.yaml
+
+# PHP / Laravel cache
 .phpactor.json
 .phpunit.result.cache
-/.fleet
-/.idea
-/.nova
 /.phpunit.cache
-/.vscode
-/.zed
-/auth.json
+/.phpunit.cache/
+.phpunit.cache/
+bootstrap/cache/*
+storage/*.key
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/pail
+
+# Node / Frontend
 /node_modules
 /public/build
 /public/hot
-/public/storage
-/storage/*.key
-/storage/pail
+
+# Composer
 /vendor
-Homestead.json
-Homestead.yaml
-Thumbs.db
+composer.lock
