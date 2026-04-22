@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Patient;
+use App\Models\FinancialRecordItem;
+use App\Models\Payment;
 
 class FinancialRecord extends Model
 {
@@ -16,7 +18,7 @@ class FinancialRecord extends Model
         'patient_id',
         'invoice_number',
         'invoice_date',
-        'amount',
+        'amount',              // grand total
         'status',
         'insurance_provider',
         'claim_number',
@@ -34,13 +36,25 @@ class FinancialRecord extends Model
         'updated_at'   => 'datetime',
     ];
 
-    // Relationship
+    // ------------------- Relationships -------------------
+
     public function patient()
     {
         return $this->belongsTo(Patient::class);
     }
 
-    // Scopes
+    public function items()
+    {
+        return $this->hasMany(FinancialRecordItem::class);
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+
+    // ------------------- Scopes -------------------
+
     public function scopeUnpaid($query)
     {
         return $query->where('status', 'unpaid');
@@ -54,5 +68,25 @@ class FinancialRecord extends Model
     public function scopePendingClaims($query)
     {
         return $query->where('claim_status', 'pending');
+    }
+
+    // ------------------- Helpers -------------------
+
+    // Calculate grand total from items
+    public function getCalculatedTotalAttribute()
+    {
+        return $this->items->sum(fn($item) => $item->quantity * $item->unit_price);
+    }
+
+    // Calculate total paid from payments
+    public function getTotalPaidAttribute()
+    {
+        return $this->payments->sum('amount');
+    }
+
+    // Calculate outstanding balance
+    public function getBalanceAttribute()
+    {
+        return $this->amount - $this->total_paid;
     }
 }

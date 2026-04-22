@@ -6,14 +6,14 @@
                 <!-- Sidebar toggle (open/close) -->
                 <button @click="sidebarOpen = !sidebarOpen"
                         class="text-gray-600 hover:text-gray-900 transition" title="Toggle sidebar">
-                    <i class="fas fa-bars"></i>
+                    <i class="fa-solid fa-bars"></i>
                 </button>
 
                 <!-- Collapse/expand sidebar width -->
                 <button @click="sidebarCollapsed = !sidebarCollapsed"
                         class="text-gray-600 hover:text-gray-900 transition" title="Collapse sidebar">
-                    <i x-show="!sidebarCollapsed" class="fas fa-angle-double-left"></i>
-                    <i x-show="sidebarCollapsed" class="fas fa-angle-double-right"></i>
+                    <i x-show="!sidebarCollapsed" class="fa-solid fa-bars-staggered"></i>
+                    <i x-show="sidebarCollapsed" class="fa-solid fa-bars-staggered"></i>
                 </button>
 
                 <!-- Logo -->
@@ -31,14 +31,52 @@
                 </div>
             </div>
 
-            <!-- Settings Dropdown -->
+            <!-- Right side: Low Stock Alerts + Profile -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
+
+                <!-- Expiry Notifications Icon -->
+                 @hasanyrole('admin|pharmacist')
+                <div class="relative">
+                    <a href="{{ route('expiry.notifications') }}"
+                    class="flex items-center text-red-600 hover:text-red-900 relative"
+                    title="Expiry Notifications">
+                        <i class="fa-solid fa-bell text-2xl"></i>
+
+                        {{-- Badge positioned at top-right of bell --}}
+                        @if(!empty($expiryCount) && $expiryCount > 0)
+                            <span class="absolute -top-1 -right-2 px-1.5 py-0.5 rounded-full bg-red-500 text-white text-xs font-semibold">
+                                {{ $expiryCount > 9 ? '9+' : $expiryCount }}
+                            </span>
+                        @endif
+                    </a>
+                </div>
+                @endhasanyrole
+
+                <!-- Low Stock Alerts Icon -->
+                @hasanyrole('admin|pharmacist')
+                <div class="relative">
+                    <a href="{{ route('stock.low') }}"
+                    class="flex items-center text-yellow-600 hover:text-red-600 relative"
+                    title="Low Stock Alerts">
+                        <i class="fa-solid fa-triangle-exclamation text-2xl"></i>
+
+                        {{-- Badge positioned at top-right of icon --}}
+                        @if(!empty($lowStockCount) && $lowStockCount > 0)
+                            <span class="absolute -top-1 -right-2 px-1.5 py-0.5 rounded-full bg-red-500 text-white text-xs font-semibold">
+                                {{ $lowStockCount > 9 ? '9+' : $lowStockCount }}
+                            </span>
+                        @endif
+                    </a>
+                </div>
+                @endhasanyrole
+
+                <!-- Settings Dropdown (Profile) -->
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
                             <div>{{ Auth::user()->name }}</div>
                             <div class="ms-1">
-                                <i class="fas fa-user-circle text-lg text-gray-600"></i>
+                                <i class="fa-solid fa-user-circle text-lg text-gray-600"></i>
                             </div>
                         </button>
                     </x-slot>
@@ -65,7 +103,7 @@
             <div class="-me-2 flex items-center sm:hidden">
                 <button @click="open = ! open"
                         class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none transition duration-150 ease-in-out">
-                    <i class="fas fa-bars"></i>
+                    <i class="fa-solid fa-bars"></i>
                 </button>
             </div>
         </div>

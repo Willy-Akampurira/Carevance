@@ -7,7 +7,7 @@
 @endsection
 
 @section('content')
-<div class="max-w-6xl mx-auto bg-white shadow rounded-lg p-6">
+<div class="w-full mx-auto bg-white shadow rounded-lg p-6">
 
     @if(session('success'))
         <div class="mb-4 p-3 bg-green-100 text-xl text-green-700 rounded">

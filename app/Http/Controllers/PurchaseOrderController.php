@@ -85,7 +85,7 @@ class PurchaseOrderController extends Controller
                 'description' => $item['description'] ?? '',
                 'quantity' => $item['quantity'],
                 'unit_price' => $item['unit_price'],
-                // ❌ no line_total here
+                'line_total' => $lineTotal,
             ]);
 
             $total += $lineTotal;
@@ -158,7 +158,7 @@ class PurchaseOrderController extends Controller
                     'description' => $item['description'] ?? '',
                     'quantity' => $item['quantity'],
                     'unit_price' => $item['unit_price'],
-                    // ❌ no line_total here
+                    'line_total' => $lineTotal,
                 ]);
             } else {
                 PurchaseOrderItem::create([
@@ -167,7 +167,7 @@ class PurchaseOrderController extends Controller
                     'description' => $item['description'] ?? '',
                     'quantity' => $item['quantity'],
                     'unit_price' => $item['unit_price'],
-                    // ❌ no line_total here
+                    'line_total' => $lineTotal,
                 ]);
             }
 

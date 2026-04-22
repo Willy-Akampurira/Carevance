@@ -1,114 +1,287 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="py-6 px-8 space-y-8 flex-1">
-        {{-- Welcome Banner --}}
-        <div x-data="{ showBanner: true }" x-show="showBanner" 
-            class="bg-green-50 border border-green-200 text-green-700 rounded-lg px-6 py-4 flex items-center justify-between">
-            
-            <span class="font-medium text-xl">
-                Welcome Back, {{ Auth::user()->name ?? 'Admin User' }}
-            </span>
+<div class="py-6 px-8 space-y-8 flex-1">
+    {{-- Welcome Banner --}}
+    <div x-data="{ showBanner: true }" x-show="showBanner" 
+        class="bg-green-50 border border-green-200 text-green-700 rounded-lg px-6 py-4 flex items-center justify-between">
+        <span class="font-medium text-xl">
+            Welcome Back, {{ Auth::user()->name ?? 'Admin User' }}
+        </span>
+        <button @click="showBanner = false" 
+                class="text-gray-600 hover:text-green-900 transition text-2xl" 
+                title="Dismiss">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
 
-            <button @click="showBanner = false" 
-                    class="text-gray-600 hover:text-green-900 transition text-2xl" 
-                    title="Dismiss">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
+    {{-- Summary Cards --}}
+    @php
+        $cards = [];
 
-        {{-- Summary Cards --}}
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8">
-            <x-summary-card icon="fa-solid fa-users" label="Total Patients" :value="$metrics['totalPatients']" accent="blue" />
-            <x-summary-card icon="fa-solid fa-pills" label="Total Drugs" :value="$metrics['totalDrugs']" accent="emerald" />
-            <x-summary-card icon="fa-solid fa-triangle-exclamation" label="Out Of Stock" :value="$metrics['outOfStock']" accent="amber" />
-            <x-summary-card icon="fa-solid fa-ban" label="Expired Drugs" :value="$metrics['expiredDrugs']" accent="red" />
-            <x-summary-card icon="fa-solid fa-file-medical" label="Active Prescriptions" :value="$metrics['activePrescriptions']" accent="indigo" />
-        </div>
+        if(auth()->user()->hasAnyRole(['admin','doctor','staff'])) {
+            $cards[] = [
+                'icon' => 'fa-solid fa-users',
+                'label' => 'Total Patients',
+                'value' => $metrics['totalPatients'],
+                'accent' => 'blue'
+            ];
+        }
+
+        if(auth()->user()->hasAnyRole(['admin','pharmacist'])) {
+            $cards[] = [
+                'icon' => 'fa-solid fa-pills',
+                'label' => 'Total Drugs',
+                'value' => $metrics['totalDrugs'],
+                'accent' => 'emerald'
+            ];
+            $cards[] = [
+                'icon' => 'fa-solid fa-triangle-exclamation',
+                'label' => 'Out Of Stock',
+                'value' => $metrics['outOfStock'],
+                'accent' => 'amber'
+            ];
+            $cards[] = [
+                'icon' => 'fa-solid fa-ban',
+                'label' => 'Expired Drugs',
+                'value' => $metrics['expiredDrugs'],
+                'accent' => 'red'
+            ];
+        }
+
+        if(auth()->user()->hasAnyRole(['admin','doctor','staff'])) {
+            $cards[] = [
+                'icon' => 'fa-solid fa-file-medical',
+                'label' => 'Active Prescriptions',
+                'value' => $metrics['activePrescriptions'],
+                'accent' => 'indigo'
+            ];
+        }
+
+        $count = count($cards);
+    @endphp
+
+    <div class="
+        grid gap-8
+        @if($count === 1) justify-center grid-cols-1 @endif
+        @if($count === 2) grid-cols-2 @endif
+        @if($count === 3) grid-cols-3 @endif
+        @if($count >= 4) sm:grid-cols-2 lg:grid-cols-5 @endif
+    ">
+        @foreach($cards as $card)
+            <x-summary-card 
+                :icon="$card['icon']" 
+                :label="$card['label']" 
+                :value="$card['value']" 
+                :accent="$card['accent']" 
+            />
+        @endforeach
+    </div>
 
         {{-- Charts Grid --}}
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <!-- Pie Chart -->
-            <div class="bg-white shadow rounded-lg p-6">
-                <h3 class="text-2xl font-semibold mb-4">Drug Stock Distribution</h3>
-                <div id="pieChart"></div>
-            </div>
+        @php
+            $charts = [];
 
-            <!-- Line Chart -->
-            <div class="bg-white shadow rounded-lg p-6">
-                <h3 class="text-2xl font-semibold mb-4">Patients Trend</h3>
-                <div id="lineChart"></div>
-            </div>
+            // Pie chart → admin, pharmacist
+            if(auth()->user()->hasAnyRole(['admin','pharmacist'])) {
+                $charts[] = [
+                    'title' => 'Drug Stock Distribution',
+                    'id' => 'pieChart'
+                ];
+            }
 
-            <!-- Bar Chart -->
-            <div class="bg-white shadow rounded-lg p-6">
-                <h3 class="text-2xl font-semibold mb-4">Prescriptions Overview</h3>
-                <div id="barChart"></div>
-            </div>
+            // Line chart → admin, doctor, staff
+            if(auth()->user()->hasAnyRole(['admin','doctor','staff'])) {
+                $charts[] = [
+                    'title' => 'Patients Trend',
+                    'id' => 'lineChart'
+                ];
+            }
+
+            // Bar chart → admin, doctor, staff
+            if(auth()->user()->hasAnyRole(['admin','doctor','staff'])) {
+                $charts[] = [
+                    'title' => 'Prescriptions Overview',
+                    'id' => 'barChart'
+                ];
+            }
+
+            $count = count($charts);
+        @endphp
+
+        <div class="
+            grid gap-6
+            @if($count === 1) justify-center grid-cols-1 @endif
+            @if($count === 2) grid-cols-2 @endif
+            @if($count === 3) md:grid-cols-3 @endif
+        ">
+            @foreach($charts as $chart)
+                <div class="bg-white shadow rounded-lg p-6 flex justify-center">
+                    <div class="@if($chart['id'] === 'pieChart') w-96 h-96 @else w-full h-80 @endif">
+                        <h3 class="text-2xl font-semibold mb-4 text-center">{{ $chart['title'] }}</h3>
+                        <div id="{{ $chart['id'] }}" class="w-full h-full"></div>
+                    </div>
+                </div>
+            @endforeach
         </div>
+    </div>
 
-        {{-- Two-panel section: Recent Activity (left) and Today's Report (right) --}}
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {{-- Recent Activity --}}
-            <div class="bg-white shadow rounded-lg p-6">
-                <h3 class="text-2xl font-semibold mb-4">Recent Activity</h3>
-                <ul class="divide-y divide-gray-200">
+    {{-- Two-panel section --}}
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {{-- Recent Activity --}}
+        <div class="bg-white shadow rounded-lg p-6">
+            <h3 class="text-2xl font-semibold mb-4">Recent Activity</h3>
+            <ul class="divide-y divide-gray-200">
+
+                {{-- Admin sees everything --}}
+                @role('admin')
                     @forelse($recentActivity as $activity)
-                        <li class="py-3 flex items-start justify-between">
-                            <div class="space-y-1">
-                                <p class="text-xl font-medium text-gray-900">
-                                    Prescription: {{ optional($activity->drug)->name ?? 'Unknown drug' }}
-                                    <span class="text-gray-500 text-xl">· {{ $activity->category ?? 'General' }}</span>
-                                </p>
-                                <p class="text-xl text-gray-500">
-                                    Patient: {{ optional($activity->patient)->name ?? 'Unknown patient' }}
-                                    · {{ $activity->created_at->diffForHumans() }}
-                                </p>
-                            </div>
-                            <span class="px-2 py-1 text-xl rounded-full
-                                {{ $activity->status === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' }}">
-                                {{ ucfirst($activity->status) }}
-                            </span>
-                        </li>
+                        @include('partials.activity-item', ['activity' => $activity])
                     @empty
                         <li class="py-3 text-xl text-gray-500">No recent activity found.</li>
                     @endforelse
-                </ul>
-            </div>
+                @endrole
 
-            {{-- Today's Report --}}
-            <div class="bg-white shadow rounded-lg p-6">
-                <h3 class="text-2xl font-semibold mb-4">Today's Report</h3>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div class="rounded-lg border border-gray-100 p-4">
-                        <p class="text-xl text-gray-500">New Patients</p>
-                        <p class="text-3xl font-semibold text-gray-900">{{ $todaysReport['patientsToday'] }}</p>
-                    </div>
-                    <div class="rounded-lg border border-gray-100 p-4">
-                        <p class="text-xl text-gray-500">New Prescriptions</p>
-                        <p class="text-3xl font-semibold text-gray-900">{{ $todaysReport['prescriptionsToday'] }}</p>
-                    </div>
-                    <div class="rounded-lg border border-gray-100 p-4">
-                        <p class="text-xl text-gray-500">Active Prescriptions (today)</p>
-                        <p class="text-3xl font-semibold text-gray-900">{{ $todaysReport['activePrescriptionsToday'] }}</p>
-                    </div>
-                    <div class="rounded-lg border border-gray-100 p-4">
-                        <p class="text-xl text-gray-500">Drugs Expiring Today</p>
-                        <p class="text-3xl font-semibold text-gray-900">{{ $todaysReport['drugsExpiredToday'] }}</p>
-                    </div>
-                    <div class="rounded-lg border border-gray-100 p-4 sm:col-span-2">
-                        <p class="text-xl text-gray-500">Out Of Stock (snapshot)</p>
-                        <p class="text-3xl font-semibold text-gray-900">{{ $todaysReport['outOfStockNow'] }}</p>
-                    </div>
-                </div>
-            </div>
+                {{-- Doctor sees Active + prescription-related statuses --}}
+                @role('doctor')
+                    @forelse($recentActivity->whereIn('status', ['Active','Dispensed','Missed','Completed','Renewal Requested']) as $activity)
+                        @include('partials.activity-item', ['activity' => $activity])
+                    @empty
+                        <li class="py-3 text-xl text-gray-500">No prescription activity found.</li>
+                    @endforelse
+                @endrole
+
+                {{-- Pharmacist sees Active + dispensing/stock statuses --}}
+                @role('pharmacist')
+                    @forelse($recentActivity->whereIn('status', ['Active','Dispensed','Expired']) as $activity)
+                        @include('partials.activity-item', ['activity' => $activity])
+                    @empty
+                        <li class="py-3 text-xl text-gray-500">No dispensing activity found.</li>
+                    @endforelse
+                @endrole
+
+                {{-- Staff sees Active + patient-facing statuses --}}
+                @role('staff')
+                    @forelse($recentActivity->whereIn('status', ['Active','Missed','Completed','Renewal Requested']) as $activity)
+                        @include('partials.activity-item', ['activity' => $activity])
+                    @empty
+                        <li class="py-3 text-xl text-gray-500">No recent activity found.</li>
+                    @endforelse
+                @endrole
+
+            </ul>
         </div>
 
-        {{-- Inject PHP data into JS --}}
-        <script>
+        {{-- Today's Report --}}
+    @php
+        $reports = [];
+
+        // New Patients → admin, doctor, staff
+        if(auth()->user()->hasAnyRole(['admin','doctor','staff'])) {
+            $reports[] = [
+                'label' => 'New Patients',
+                'value' => $todaysReport['patientsToday']
+            ];
+        }
+
+        // New Prescriptions → admin, doctor, staff
+        if(auth()->user()->hasAnyRole(['admin','doctor','staff'])) {
+            $reports[] = [
+                'label' => 'New Prescriptions',
+                'value' => $todaysReport['prescriptionsToday']
+            ];
+        }
+
+        // Active Prescriptions (today) → admin, doctor, staff
+        if(auth()->user()->hasAnyRole(['admin','doctor','staff'])) {
+            $reports[] = [
+                'label' => 'Active Prescriptions (today)',
+                'value' => $todaysReport['activePrescriptionsToday']
+            ];
+        }
+
+        // Drugs Expiring Today → admin, pharmacist
+        if(auth()->user()->hasAnyRole(['admin','pharmacist'])) {
+            $reports[] = [
+                'label' => 'Drugs Expiring Today',
+                'value' => $todaysReport['drugsExpiredToday']
+            ];
+        }
+
+        // Out Of Stock (Snapshot) → admin, pharmacist
+        if(auth()->user()->hasAnyRole(['admin','pharmacist'])) {
+            $reports[] = [
+                'label' => 'Out Of Stock (snapshot)',
+                'value' => $todaysReport['outOfStockNow']
+            ];
+        }
+
+        $count = count($reports);
+    @endphp
+
+    <div class="bg-white shadow rounded-lg p-6">
+        <h3 class="text-2xl font-semibold mb-4">Today's Report</h3>
+
+        <div class="
+            grid gap-4
+            @if($count === 1) justify-center grid-cols-1 @endif
+            @if($count === 2) grid-cols-2 @endif
+            @if($count === 3) grid-cols-3 @endif
+            @if($count >= 4) sm:grid-cols-2 lg:grid-cols-5 @endif
+        ">
+            @foreach($reports as $report)
+                <div class="rounded-lg border border-gray-100 p-4">
+                    <p class="text-xl text-gray-500">{{ $report['label'] }}</p>
+                    <p class="text-3xl font-semibold text-gray-900">{{ $report['value'] }}</p>
+                </div>
+            @endforeach
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
             const patientsTrend = @json($patientsTrend);
             const drugStock = @json($drugStock);
             const prescriptionsData = @json($prescriptionsData);
-        </script>
-    </div>
+
+            // Pie Chart
+            new ApexCharts(document.querySelector("#pieChart"), {
+                chart: { type: 'pie' },
+                series: [drugStock.inStock, drugStock.outOfStock, drugStock.expired, drugStock.reserved],
+                labels: ['In Stock', 'Out Of Stock', 'Expired', 'Reserved'],
+                colors: ['#10b981', '#f59e0b', '#ef4444', '#6366f1']
+            }).render();
+
+            // Line Chart
+            new ApexCharts(document.querySelector("#lineChart"), {
+                chart: { type: 'line' },
+                series: [{
+                    name: 'Patients',
+                    data: Object.values(patientsTrend)
+                }],
+                xaxis: {
+                    categories: Object.keys(patientsTrend).map(m => {
+                        const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+                        return months[m-1] || m;
+                    })
+                },
+                colors: ['#3b82f6']
+            }).render();
+
+            // Bar Chart
+            new ApexCharts(document.querySelector("#barChart"), {
+                chart: { type: 'bar' },
+                series: [{
+                    name: 'Prescriptions',
+                    data: Object.values(prescriptionsData)
+                }],
+                xaxis: {
+                    categories: Object.keys(prescriptionsData)
+                },
+                colors: ['#6366f1']
+            }).render();
+        });
+    </script>
+</div>
 @endsection

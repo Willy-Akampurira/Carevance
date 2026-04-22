@@ -21,7 +21,6 @@ class Supplier extends Model
         'phone',
         'email',
         'address',
-        'tax_id',
         'status',
         'notes',
     ];

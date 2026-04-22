@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-<div class="max-w-4xl mx-auto text-xl bg-white shadow rounded-lg p-6">
+<div class="w-full mx-auto text-xl bg-white shadow rounded-lg p-6">
     <h3 class="text-2xl font-bold mb-4">{{ $supplier->name }}</h3>
 
     <p><strong>Contact Person:</strong> {{ $supplier->contact_person }}</p>

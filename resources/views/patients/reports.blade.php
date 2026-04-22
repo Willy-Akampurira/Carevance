@@ -7,7 +7,7 @@
 @endsection
 
 @section('content')
-<div class="max-w-6xl mx-auto bg-white shadow rounded-lg p-6">
+<div class="w-full mx-auto bg-white shadow rounded-lg p-6">
 
     <!-- Patient Growth -->
     <h3 class="text-2xl font-bold mb-6">Patient Growth (Monthly Registrations)</h3>
@@ -44,7 +44,7 @@
 
     <!-- Disease Categories -->
     <h3 class="text-2xl font-bold mb-6">Disease Categories</h3>
-    <table class="table-auto w-full border text-left border-gray-200 rounded-lg">
+    <table class="table-auto w-full border text-left border-gray-200 rounded-lg mb-8">
         <thead class="bg-gray-100">
             <tr class="text-xl">
                 <th class="px-4 py-2">Diagnosis</th>
@@ -62,6 +62,59 @@
                     <td colspan="2" class="px-4 py-4 text-center text-xl text-gray-500">No disease data available.</td>
                 </tr>
             @endforelse
+        </tbody>
+    </table>
+
+    <!-- Billing Reports -->
+    <h3 class="text-2xl font-bold mb-6">Billing Reports</h3>
+    <table class="table-auto w-full border text-left border-gray-200 rounded-lg mb-8">
+        <thead class="bg-gray-100">
+            <tr class="text-xl">
+                <th class="px-4 py-2">Status</th>
+                <th class="px-4 py-2">Count</th>
+                <th class="px-4 py-2">Total Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="border-t text-lg">
+                <td class="px-4 py-2">Unpaid</td>
+                <td class="px-4 py-2">{{ $billingStats['unpaid_count'] }}</td>
+                <td class="px-4 py-2">UGX {{ number_format($billingStats['unpaid_total'], 2) }}</td>
+            </tr>
+            <tr class="border-t text-lg">
+                <td class="px-4 py-2">Paid</td>
+                <td class="px-4 py-2">{{ $billingStats['paid_count'] }}</td>
+                <td class="px-4 py-2">UGX {{ number_format($billingStats['paid_total'], 2) }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Insurance Claims -->
+    <h3 class="text-2xl font-bold mb-6">Insurance Claims</h3>
+    <table class="table-auto w-full border text-left border-gray-200 rounded-lg">
+        <thead class="bg-gray-100">
+            <tr class="text-xl">
+                <th class="px-4 py-2">Status</th>
+                <th class="px-4 py-2">Count</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="border-t text-lg">
+                <td class="px-4 py-2">Submitted</td>
+                <td class="px-4 py-2">{{ $claimStats['submitted'] }}</td>
+            </tr>
+            <tr class="border-t text-lg">
+                <td class="px-4 py-2">Approved</td>
+                <td class="px-4 py-2">{{ $claimStats['approved'] }}</td>
+            </tr>
+            <tr class="border-t text-lg">
+                <td class="px-4 py-2">Denied</td>
+                <td class="px-4 py-2">{{ $claimStats['denied'] }}</td>
+            </tr>
+            <tr class="border-t text-lg">
+                <td class="px-4 py-2">Pending</td>
+                <td class="px-4 py-2">{{ $claimStats['pending'] }}</td>
+            </tr>
         </tbody>
     </table>
 

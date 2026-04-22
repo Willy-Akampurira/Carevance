@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-<div class="max-w-7xl mx-auto bg-white shadow rounded-lg p-6">
+<div class="w-full mx-auto bg-white shadow rounded-lg p-6">
     <!-- Top bar -->
     <div class="flex justify-between items-center mb-4">
         <a href="{{ route('suppliers.index') }}"

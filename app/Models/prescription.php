@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Appointment;
 use App\Models\Patient;
 use App\Models\Drug;
+use App\Models\StockLot;
 
 class Prescription extends Model
 {
@@ -18,7 +19,7 @@ class Prescription extends Model
         'appointment_id',
         'patient_id',
         'drug_id',
-        'drug_name',
+        'lot_id',          // ✅ link to specific stock lot
         'dosage',
         'frequency',
         'duration_days',
@@ -29,6 +30,7 @@ class Prescription extends Model
         'category',
         'renewal_requested',
         'notes',
+        'quantity',        // ✅ prescribed quantity for auto-deduction
     ];
 
     protected $casts = [
@@ -55,6 +57,11 @@ class Prescription extends Model
     public function drug()
     {
         return $this->belongsTo(Drug::class);
+    }
+
+    public function stockLot()
+    {
+        return $this->belongsTo(StockLot::class, 'lot_id');
     }
 
     /**

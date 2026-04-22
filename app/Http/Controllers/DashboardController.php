@@ -13,32 +13,45 @@ class DashboardController extends Controller
     public function index()
     {
         $today = Carbon::today();
+        $now   = Carbon::now();
 
-        // Summary metrics for cards
+        // Summary metrics for cards → lot-aware
         $metrics = [
             'totalPatients'       => Patient::count(),
             'totalDrugs'          => Drug::count(),
-            'outOfStock'          => Drug::where('quantity', '<=', 0)->count(),
-            'expiredDrugs'        => Drug::whereDate('expiry_date', '<', $today)->count(),
-            'activePrescriptions' => Prescription::where('status', 'active')->count(),
+            'outOfStock'          => (int) Drug::whereHas('stockLots', function ($q) {
+                                        $q->where('quantity', '<=', 0);
+                                    })->count(),
+            'expiredDrugs'        => (int) Drug::whereHas('stockLots', function ($q) use ($now) {
+                                        $q->where('expiry_date', '<', $now);
+                                    })->count(),
+            'activePrescriptions' => (int) Prescription::where('status', 'active')->count(),
         ];
 
-        // Patients trend (line chart) → count per month
+        // Patients trend (line chart)
         $patientsTrend = Patient::select(
                 DB::raw('COUNT(*) as count'),
-                DB::raw('MONTH(created_at) as month')
+                DB::raw('MONTH(entry_date) as month')
             )
+            ->whereNotNull('entry_date')
             ->groupBy('month')
             ->orderBy('month')
             ->pluck('count', 'month')
             ->toArray();
 
-        // Drug stock distribution (pie chart)
+        // Drug stock distribution (pie chart) → lot-aware
         $drugStock = [
-            'inStock'    => Drug::where('quantity', '>', 0)->count(),
-            'outOfStock' => Drug::where('quantity', '=', 0)->count(),
-            'expired'    => Drug::whereDate('expiry_date', '<', $today)->count(),
-            'reserved'   => Drug::where('reserved', true)->count(),
+            'inStock'    => (int) Drug::whereHas('stockLots', function ($q) use ($now) {
+                                        $q->where('quantity', '>', 0)
+                                           ->where('expiry_date', '>=', $now);
+                                    })->count(),
+            'outOfStock' => (int) Drug::whereHas('stockLots', function ($q) {
+                                        $q->where('quantity', '<=', 0);
+                                    })->count(),
+            'expired'    => (int) Drug::whereHas('stockLots', function ($q) use ($now) {
+                                        $q->where('expiry_date', '<', $now);
+                                    })->count(),
+            'reserved'   => (int) Drug::where('reserved', true)->count(),
         ];
 
         // Prescriptions by category (bar chart)
@@ -47,19 +60,23 @@ class DashboardController extends Controller
             ->pluck('count', 'category')
             ->toArray();
 
-        // Recent activity (latest 5 prescriptions)
+        // Recent activity
         $recentActivity = Prescription::with(['patient', 'drug'])
             ->orderByDesc('created_at')
             ->take(5)
             ->get();
 
-        // Today's report snapshot
+        // Today's report snapshot → lot-aware expiry
         $todaysReport = [
-            'patientsToday'              => Patient::whereDate('created_at', $today)->count(),
-            'prescriptionsToday'         => Prescription::whereDate('created_at', $today)->count(),
-            'activePrescriptionsToday'   => Prescription::whereDate('created_at', $today)->where('status', 'active')->count(),
-            'drugsExpiredToday'          => Drug::whereDate('expiry_date', $today)->count(),
-            'outOfStockNow'              => Drug::where('quantity', '<=', 0)->count(),
+            'patientsToday'            => (int) Patient::whereDate('entry_date', $today)->count(),
+            'prescriptionsToday'       => (int) Prescription::whereDate('created_at', $today)->count(),
+            'activePrescriptionsToday' => (int) Prescription::whereDate('created_at', $today)->where('status', 'active')->count(),
+            'drugsExpiredToday'        => (int) Drug::whereHas('stockLots', function ($q) use ($today) {
+                                            $q->whereDate('expiry_date', '=', $today);
+                                        })->count(),
+            'outOfStockNow'            => (int) Drug::whereHas('stockLots', function ($q) {
+                                            $q->where('quantity', '<=', 0);
+                                        })->count(),
         ];
 
         return view('dashboard', compact(

@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-<div class="max-w-4xl mx-auto bg-white shadow rounded-lg p-6">
+<div class="w-full mx-auto bg-white shadow rounded-lg p-6">
     <!-- Success / Error Messages -->
     @if(session('success'))
         <div class="mb-4 p-3 bg-green-100 text-xl text-green-800 rounded">
@@ -50,11 +50,6 @@
         <div class="mb-4">
             <label class="block text-gray-700 text-xl">Address</label>
             <input type="text" name="address" value="{{ old('address',$supplier->address) }}" class="w-full border rounded text-xl border-gray-300 px-3 py-2  focus:ring-green-500 focus:border-green-500">
-        </div>
-
-        <div class="mb-4">
-            <label class="block text-gray-700 text-xl">Tax ID</label>
-            <input type="text" name="tax_id" value="{{ old('tax_id',$supplier->tax_id) }}" class="w-full border rounded text-xl border-gray-300 px-3 py-2  focus:ring-green-500 focus:border-green-500">
         </div>
 
         <div class="mb-4">

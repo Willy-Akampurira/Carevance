@@ -24,6 +24,7 @@ class Patient extends Model
         'email',
         'address',
         'medical_history',
+        'entry_date',   // ✅ new field for backdating patient entry
     ];
 
     /**
@@ -31,6 +32,7 @@ class Patient extends Model
      */
     protected $casts = [
         'dob' => 'date',
+        'entry_date' => 'date',   // ✅ cast entry_date to date
         'deleted_at' => 'datetime',
     ];
 

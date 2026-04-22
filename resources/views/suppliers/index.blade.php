@@ -13,7 +13,7 @@
 @endsection
 
 @section('content')
-<div class="max-w-7xl mx-auto bg-white shadow rounded-lg p-6">
+<div class="w-full mx-auto bg-white shadow rounded-lg p-6">
     <!-- Top bar -->
     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4">
         <a href="{{ route('suppliers.create') }}"

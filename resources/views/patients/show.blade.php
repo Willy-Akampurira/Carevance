@@ -7,7 +7,7 @@
 @endsection
 
 @section('content')
-<div class="max-w-4xl mx-auto bg-white shadow rounded-lg p-6">
+<div class="w-full mx-auto bg-white shadow rounded-lg p-6">
     <div class="mb-4 text-xl">
         <h3 class="text-2xl font-semibold text-green-700">Demographics</h3>
         <p><strong>Name:</strong> {{ $patient->name }}</p>

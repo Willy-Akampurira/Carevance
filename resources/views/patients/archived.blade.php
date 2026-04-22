@@ -7,7 +7,7 @@
 @endsection
 
 @section('content')
-<div class="max-w-6xl mx-auto bg-white shadow rounded-lg p-6">
+<div class="w-full mx-auto bg-white shadow rounded-lg p-6">
     @if(session('success'))
         <div class="mb-4 p-3 bg-green-100 text-xl text-green-700 rounded">
             {{ session('success') }}
@@ -17,7 +17,7 @@
     <table class="table-auto mx-auto border border-gray-200 rounded-lg w-full">
         <thead class="bg-gray-100">
             <tr class="text-2xl">
-                <th class="px-4 py-2 text-left">#</th>
+                <th class="px-4 py-2 text-left">Serial No.</th>
                 <th class="px-4 py-2 text-left">Name</th>
                 <th class="px-4 py-2 text-left">DOB</th>
                 <th class="px-4 py-2 text-left">Gender</th>
