@@ -8,7 +8,7 @@
         <title>{{ config('app.name', 'Carevance') }}</title>
 
         <!-- Favicon -->
-        <link rel="icon" href="{{ asset('images/logo.png') }}" type="image/png">
+        <link rel="icon" href="{{ asset('images/logo.png') }}" type="image/webp">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -17,7 +17,7 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans text-gray-900 antialiased overflow-x-hidden" 
+    <body class="font-sans text-gray-900 antialiased" 
           style="background-image: url('{{ asset('images/pharmacare.webp') }}'); 
                  background-size: cover; 
                  background-position: center;">
@@ -26,7 +26,7 @@
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-900 bg-opacity-50">
             <div>
                 <a href="/">
-                    <img src="{{ asset('images/logo.png') }}" alt="CAREVANCE Logo" class="w-32 h-32">
+                    <img src="{{ asset('images/logo.png') }}" alt="Carevance Logo" class="w-32 h-32">
                 </a>
             </div>
 
@@ -34,9 +34,9 @@
                 {{ $slot }}
             </div>
 
-            <!-- Footer (inside overlay, no light background) -->
-            <footer class="py-4 mt-10 flex justify-center items-center px-4 w-full text-gray-200">
-                <p class="text-sm text-center">
+            <!-- Footer -->
+            <footer class="absolute bottom-4 text-xs text-gray-300 text-center">
+               <p class="text-sm text-center">
                     &copy; {{ date('Y') }} Carevance. All rights reserved. 
                     <span class="ml-2">Designed & Developed by Carevance Team</span>
                 </p>
