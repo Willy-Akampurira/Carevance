@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DrugController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\StaffController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\BackupRestoreController;
 
 // Supplier module controllers
 use App\Http\Controllers\SupplierController;
@@ -517,6 +519,20 @@ Route::get('/settings/footer', [SettingsController::class, 'footer'])
 Route::put('/settings/footer', [SettingsController::class, 'updateFooter'])
     ->middleware('auth')
     ->name('settings.footer.update');
+
+// UI page for Backup & Restore (loads Blade view)
+Route::view('/settings/backup', 'settings.backup')->name('settings.backup.page');
+
+// Action: Run backup (downloads .sql file)
+Route::get('/settings/backup/run', [BackupRestoreController::class, 'backup'])->name('settings.backup.run');
+
+// Action: Restore from uploaded file
+Route::post('/settings/restore', [BackupRestoreController::class, 'restore'])->name('settings.restore');
+
+// Action: Download a backup file from history
+Route::get('/settings/backup/download/{file}', function ($file) {
+    return Storage::download('backups/' . $file);
+})->name('settings.backup.download');
 
 // Main resources
 Route::resource('patients', PatientController::class)->middleware(['auth']);
