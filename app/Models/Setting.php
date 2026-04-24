@@ -6,21 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Setting extends Model
 {
-    // Explicitly define the table name
     protected $table = 'settings';
 
-    // Allow mass assignment for these fields
     protected $fillable = [
         'setting_key',
         'value',
     ];
 
+    public $timestamps = false; // optional, since settings rarely need timestamps
+
     /**
-     * Helper: get a setting by key
-     *
-     * @param string $key
-     * @param mixed $default
-     * @return mixed
+     * Get a setting by key.
      */
     public static function getValue(string $key, $default = null)
     {
@@ -29,11 +25,7 @@ class Setting extends Model
     }
 
     /**
-     * Helper: set or update a setting
-     *
-     * @param string $key
-     * @param mixed $value
-     * @return \App\Models\Setting
+     * Set or update a setting.
      */
     public static function setValue(string $key, $value)
     {
@@ -41,5 +33,15 @@ class Setting extends Model
             ['setting_key' => $key],
             ['value' => $value]
         );
+    }
+
+    /**
+     * Bulk update multiple settings at once.
+     */
+    public static function setValues(array $settings)
+    {
+        foreach ($settings as $key => $value) {
+            static::setValue($key, $value);
+        }
     }
 }

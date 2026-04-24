@@ -1,12 +1,12 @@
 <aside x-bind:class="sidebarCollapsed ? 'w-20' : 'w-72'"
        class="fixed top-0 left-0 h-screen bg-gray-900 text-white shadow-lg z-50 transition-all duration-300 ease-in-out flex flex-col overflow-auto">
 
-    <!-- Logo Section -->
+   <!-- Logo Section -->
     <div class="p-4 flex items-center justify-center">
-        <img src="{{ asset('images/logo.png') }}"
-             alt="Carevance"
-             class="h-32 transition-all duration-300"
-             x-bind:class="sidebarCollapsed ? 'mx-auto' : 'ml-2'">
+        <img src="{{ asset('storage/' . \App\Models\Setting::getValue('clinic_logo', 'logo.png')) }}"
+            alt="{{ \App\Models\Setting::getValue('clinic_name', 'Supreme Clinic') }} Logo"
+            class="h-32 transition-all duration-300"
+            x-bind:class="sidebarCollapsed ? 'mx-auto' : 'ml-2'">
     </div>
 
     <!-- Navigation Links -->
@@ -331,7 +331,51 @@
             </div>
         </div>
         @endhasanyrole
-        
+
+        @hasanyrole('admin')
+        <!-- Settings Module Sidebar Dropdown -->
+        <div x-data="{ open: false }" class="relative">
+            <button @click="open = !open"
+                    class="w-full flex items-center gap-3 px-4 py-3 rounded-md transition
+                        text-gray-700 dark:text-gray-200
+                        hover:bg-green-100 hover:text-green-700
+                        dark:hover:bg-green-900 dark:hover:text-green-200">
+                <i class="fa-solid fa-gear text-lg"></i>
+                <span x-show="!sidebarCollapsed" class="text-xl font-medium flex-1 text-left">
+                    Settings
+                </span>
+                <i x-show="!sidebarCollapsed" 
+                :class="open ? 'fas fa-chevron-up' : 'fas fa-chevron-down'" 
+                class="ml-auto text-sm"></i>
+            </button>
+
+            <div x-show="open && !sidebarCollapsed" x-transition class="mt-1 ml-10 space-y-1">
+                <!-- Clinic Information -->
+                <a href="{{ route('settings.clinic') }}" 
+                class="block px-4 py-2 text-lg rounded-md text-gray-600 hover:bg-green-50">
+                    Clinic Information
+                </a>
+
+                <!-- Invoice Settings -->
+                <a href="{{ route('settings.invoice') }}" 
+                class="block px-4 py-2 text-lg rounded-md text-gray-600 hover:bg-green-50">
+                    Invoice Settings
+                </a>
+
+                <!-- Theme Settings -->
+                <a href="{{ route('settings.theme') }}" 
+                class="block px-4 py-2 text-lg rounded-md text-gray-600 hover:bg-green-50">
+                    Theme Settings
+                </a>
+
+                <!-- Footer Settings -->
+                <a href="{{ route('settings.footer') }}" 
+                class="block px-4 py-2 text-lg rounded-md text-gray-600 hover:bg-green-50">
+                    Footer Settings
+                </a>
+            </div>
+        </div>
+    @endhasanyrole
     </nav>
 
     <!-- Profile Section -->

@@ -80,7 +80,11 @@ class DrugController extends Controller
      */
     public function show(Drug $drug)
     {
-        return view('drugs.show', compact('drug'));
+        $nearestLot = $drug->stockLots()
+            ->orderBy('expiry_date', 'asc')
+            ->first();
+
+        return view('drugs.show', compact('drug', 'nearestLot'));
     }
 
     /**

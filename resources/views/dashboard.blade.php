@@ -117,7 +117,7 @@
         ">
             @foreach($charts as $chart)
                 <div class="bg-white shadow rounded-lg p-6 flex justify-center">
-                    <div class="@if($chart['id'] === 'pieChart') w-96 h-96 @else w-full h-80 @endif">
+                    <div class="w-96 h-96">
                         <h3 class="text-2xl font-semibold mb-4 text-center">{{ $chart['title'] }}</h3>
                         <div id="{{ $chart['id'] }}" class="w-full h-full"></div>
                     </div>

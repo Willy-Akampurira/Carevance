@@ -47,7 +47,7 @@
 
         <div>
             <span class="font-semibold">Expiry Date:</span>
-            {{ $drug->expiry_date ? \Carbon\Carbon::parse($drug->expiry_date)->format('d M Y') : '—' }}
+            {{ $nearestLot?->expiry_date?->format('d M Y') ?? '—' }}
         </div>
 
         <div>

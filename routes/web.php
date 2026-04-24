@@ -11,6 +11,7 @@ use App\Http\Controllers\PatientController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\SettingsController;
 
 // Supplier module controllers
 use App\Http\Controllers\SupplierController;
@@ -483,6 +484,39 @@ Route::patch('/users/{user}/restore', [UserController::class, 'restore'])
 Route::delete('/users/{user}/force-delete', [UserController::class, 'forceDelete'])
     ->middleware('auth')
     ->name('users.forceDelete');
+
+// Settings Module
+Route::get('/settings/clinic', [SettingsController::class, 'clinic'])
+    ->middleware('auth')
+    ->name('settings.clinic');
+
+Route::put('/settings/clinic', [SettingsController::class, 'updateClinic'])
+    ->middleware('auth')
+    ->name('settings.clinic.update');
+
+Route::get('/settings/invoice', [SettingsController::class, 'invoice'])
+    ->middleware('auth')
+    ->name('settings.invoice');
+
+Route::put('/settings/invoice', [SettingsController::class, 'updateInvoice'])
+    ->middleware('auth')
+    ->name('settings.invoice.update');
+
+Route::get('/settings/theme', [SettingsController::class, 'theme'])
+    ->middleware('auth')
+    ->name('settings.theme');
+
+Route::put('/settings/theme', [SettingsController::class, 'updateTheme'])
+    ->middleware('auth')
+    ->name('settings.theme.update');
+
+Route::get('/settings/footer', [SettingsController::class, 'footer'])
+    ->middleware('auth')
+    ->name('settings.footer');
+
+Route::put('/settings/footer', [SettingsController::class, 'updateFooter'])
+    ->middleware('auth')
+    ->name('settings.footer.update');
 
 // Main resources
 Route::resource('patients', PatientController::class)->middleware(['auth']);

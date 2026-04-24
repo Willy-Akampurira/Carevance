@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Carevance') }}</title>
+    <title>{{ config('app.name', 'Supreme-Clinic') }}</title>
 
     <!-- Favicon -->
     <link rel="icon" href="{{ asset('images/logo.png') }}" type="image/png">
@@ -174,9 +174,35 @@
 
     <!-- Footer-->
     <footer" class="py-4 mt-10 flex justify-center items-center px-4 w-full text-gray-700">
-        <p class="text-sm text-center">
-            &copy; {{ date('Y') }} Carevance. All rights reserved. 
-            <span class="ml-2">Designed & Developed by Carevance Team</span>
+        <p class="text-sm text-center flex flex-wrap items-center justify-center gap-4">
+            &copy; {{ date('Y') }} 
+            {{ \App\Models\Setting::where('setting_key','clinic_name')->value('value') ?? 'Supreme-Clinic' }}. 
+            {{ \App\Models\Setting::where('setting_key','footer_text')->value('value') ?? 'Designed & Developed by Supreme-Clinic Team' }}
+
+            <span>
+                <i class="fas fa-phone text-green-500 mr-1"></i>
+                {{ \App\Models\Setting::where('setting_key','clinic_phone')->value('value') ?? '+256 700 123456' }}
+            </span>
+
+            <span>
+                <i class="fas fa-envelope text-blue-500 mr-1"></i>
+                {{ \App\Models\Setting::where('setting_key','clinic_email')->value('value') ?? 'info@supremeclinic.ug' }}
+            </span>
+
+            <span>
+                <a href="{{ \App\Models\Setting::where('setting_key','facebook_url')->value('value') ?? '#' }}" 
+                class="text-blue-600 hover:underline mr-2">
+                <i class="fab fa-facebook"></i>
+                </a>
+                <a href="{{ \App\Models\Setting::where('setting_key','twitter_url')->value('value') ?? '#' }}" 
+                class="text-black hover:underline mr-2">
+                <i class="fab fa-x-twitter"></i>
+                </a>
+                <a href="{{ \App\Models\Setting::where('setting_key','whatsapp_url')->value('value') ?? '#' }}" 
+                class="text-green-500 hover:underline">
+                <i class="fab fa-whatsapp"></i>
+                </a>
+            </span>
         </p>
     </footer>
 </body>
