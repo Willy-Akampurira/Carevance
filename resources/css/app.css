@@ -1,17 +1,23 @@
+/* Import Font Awesome locally (installed via npm) */
+@import "@fortawesome/fontawesome-free/css/all.min.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* app.css or tailwind.config.js theme extension */
+/* Sidebar theme extensions */
 .sidebar-bg {
     @apply bg-white dark:bg-gray-900;
 }
+
 .text-sidebar-text {
     @apply text-gray-800 dark:text-gray-200;
 }
+
 .hover\:bg-sidebar-hover:hover {
     @apply bg-gray-100 dark:bg-gray-800;
 }
+
 .bg-sidebar-active {
     @apply bg-gray-200 dark:bg-gray-700;
 }

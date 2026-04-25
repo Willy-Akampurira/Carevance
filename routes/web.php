@@ -521,15 +521,18 @@ Route::put('/settings/footer', [SettingsController::class, 'updateFooter'])
     ->name('settings.footer.update');
 
 // UI page for Backup & Restore (loads Blade view)
-Route::view('/settings/backup', 'settings.backup')->name('settings.backup.page');
+Route::view('/settings/backup', 'settings.backup')
+    ->name('settings.backup.page');
 
-// Action: Run backup (downloads .sql file)
-Route::get('/settings/backup/run', [BackupRestoreController::class, 'backup'])->name('settings.backup.run');
+// Action: Run backup (downloads .sql file via phpMyAdmin or mysqldump)
+Route::get('/settings/backup/run', [BackupRestoreController::class, 'backup'])
+    ->name('settings.backup.run');
 
 // Action: Restore from uploaded file
-Route::post('/settings/restore', [BackupRestoreController::class, 'restore'])->name('settings.restore');
+Route::post('/settings/restore', [BackupRestoreController::class, 'restore'])
+    ->name('settings.restore');
 
-// Action: Download a backup file from history
+// Action: Download a backup file from history (stored in /storage/app/backups)
 Route::get('/settings/backup/download/{file}', function ($file) {
     return Storage::download('backups/' . $file);
 })->name('settings.backup.download');

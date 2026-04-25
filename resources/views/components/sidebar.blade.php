@@ -377,15 +377,15 @@
         </div>
         @endhasanyrole
 
-        {{-- Backup & Restore → admin only --}}
+         <!-- {{-- Backup & Restore → admin only --}}
         @hasanyrole('admin')
         <a href="{{ route('settings.backup.page') }}" 
         class="flex items-center gap-3 px-4 py-2 hover:bg-green-800">
             <i class="fa-solid fa-database text-lg"></i>
             <span x-show="!sidebarCollapsed" class="text-xl font-medium">Backup & Restore</span>
         </a>
-        @endhasanyrole
-
+        @endhasanyrole -->
+        
     </nav>
 
     <!-- Profile Section -->

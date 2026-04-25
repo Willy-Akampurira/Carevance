@@ -8,29 +8,33 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 class BackupRestoreController extends Controller
 {
     /**
-     * Create a database backup and stream it as a download
+     * Create a database backup using mysqldump
      */
     public function backup(): StreamedResponse
     {
-        $database = env('DB_DATABASE');
-        $user     = env('DB_USERNAME');
-        $pass     = env('DB_PASSWORD');
-        $host     = env('DB_HOST');
+        $database = env('DB_DATABASE');   // carevance
+        $user     = env('DB_USERNAME');   // root
+        $pass     = env('DB_PASSWORD');   // blank if no password
+        $host     = env('DB_HOST');       // 127.0.0.1
 
         $filename = 'backup_' . $database . '_' . now()->format('Y-m-d_H-i-s') . '.sql';
 
-        // Build mysqldump command
+        // Build mysqldump command with correct path
         $command = sprintf(
-            '"%s" --user=%s %s --host=%s %s',
-            env('MYSQLDUMP_PATH', 'C:/xampp/mysql/bin/mysqldump.exe'),
+            '"%s" -u%s %s -h%s %s',
+            env('MYSQLDUMP_PATH', 'C:\\xampp\\mysql\\bin\\mysqldump.exe'),
             $user,
-            $pass ? '--password=' . $pass : '',
+            $pass ? '-p' . $pass : '',   // IMPORTANT: no space after -p
             $host,
             $database
         );
 
         return response()->streamDownload(function () use ($command) {
             $process = popen($command, 'r');
+            if (!$process) {
+                echo "-- Backup failed: unable to run mysqldump\n";
+                return;
+            }
             while (!feof($process)) {
                 echo fread($process, 4096);
             }
@@ -55,10 +59,10 @@ class BackupRestoreController extends Controller
         $host     = env('DB_HOST');
 
         $command = sprintf(
-            '"%s" --user=%s %s --host=%s %s < "%s"',
-            env('MYSQL_PATH', 'C:/xampp/mysql/bin/mysql.exe'),
+            '"%s" -u%s %s -h%s %s < "%s"',
+            env('MYSQL_PATH', 'C:\\xampp\\mysql\\bin\\mysql.exe'),
             $user,
-            $pass ? '--password=' . $pass : '',
+            $pass ? '-p' . $pass : '',
             $host,
             $database,
             $path
@@ -67,7 +71,7 @@ class BackupRestoreController extends Controller
         exec($command, $output, $returnVar);
 
         if ($returnVar !== 0) {
-            return back()->with('error', 'Restore failed. Please check the backup file.');
+            return back()->with('error', 'Restore failed. Please check the backup file and credentials.');
         }
 
         return back()->with('success', 'Database restored successfully.');
