@@ -1,5 +1,13 @@
 @extends('layouts.app')
 
+@section('header')
+<div class="flex items-center justify-between">
+    <h2 class="font-semibold text-3xl text-gray-800 leading-tight">
+        Edit Purchase Orders
+    </h2>
+</div>
+@endsection
+
 @section('content')
 <div class="max-w-5xl mx-auto bg-white shadow rounded-lg p-6">
     <h2 class="text-2xl font-bold mb-4">Edit Purchase Order {{ $purchaseOrder->order_number }}</h2>

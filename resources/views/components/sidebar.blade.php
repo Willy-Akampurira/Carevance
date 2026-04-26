@@ -21,9 +21,8 @@
         <div x-data="{ open: false }" class="relative">
             <button @click="open = !open"
                     class="w-full flex items-center gap-3 px-4 py-3 rounded-md transition
-                        text-gray-700 dark:text-gray-200
-                        hover:bg-green-100 hover:text-green-700
-                        dark:hover:bg-green-900 dark:hover:text-green-200">
+                        text-gray-200
+                        hover:bg-green-800 hover:text-white">
                 <i class="fa-solid fa-user-injured text-lg"></i>
                 <span x-show="!sidebarCollapsed" class="text-xl font-medium flex-1 text-left">
                     Patients
@@ -105,9 +104,8 @@
         <div x-data="{ open: false }" class="relative">
             <button @click="open = !open"
                     class="w-full flex items-center gap-3 px-4 py-3 rounded-md transition
-                        text-gray-700 dark:text-gray-200
-                        hover:bg-green-100 hover:text-green-700
-                        dark:hover:bg-green-900 dark:hover:text-green-200">
+                        text-gray-200
+                        hover:bg-green-800 hover:text-white">
                 <i class="fa-solid fa-truck text-lg"></i>
                 <span x-show="!sidebarCollapsed" class="text-xl font-medium flex-1 text-left">
                     Suppliers
@@ -133,9 +131,8 @@
         <div x-data="{ open: false }" class="relative">
             <button @click="open = !open"
                     class="w-full flex items-center gap-3 px-4 py-3 rounded-md transition
-                        text-gray-700 dark:text-gray-200
-                        hover:bg-green-100 hover:text-green-700
-                        dark:hover:bg-green-900 dark:hover:text-green-200">
+                        text-gray-200
+                        hover:bg-green-800 hover:text-white">
                 <i class="fa-solid fa-pills text-lg"></i>
                 <span x-show="!sidebarCollapsed" class="text-xl font-medium flex-1 text-left">
                     Drugs
@@ -167,9 +164,8 @@
         <div x-data="{ open: false }" class="relative">
             <button @click="open = !open"
                     class="w-full flex items-center gap-3 px-4 py-3 rounded-md transition
-                        text-gray-700 dark:text-gray-200
-                        hover:bg-green-100 hover:text-green-700
-                        dark:hover:bg-green-900 dark:hover:text-green-200">
+                        text-gray-200
+                        hover:bg-green-800 hover:text-white">
                 <i class="fa-solid fa-boxes-stacked text-lg"></i>
                 <span x-show="!sidebarCollapsed" class="text-xl font-medium flex-1 text-left">
                     Stock Management
@@ -201,16 +197,13 @@
         </div>
         @endhasanyrole
 
-         
-
         <!-- Expiry Management Sidebar Dropdown -->
          @hasanyrole('admin|pharmacist')
         <div x-data="{ open: false }" class="relative">
             <button @click="open = !open"
                     class="w-full flex items-center gap-3 px-4 py-3 rounded-md transition
-                        text-gray-700 dark:text-gray-200
-                        hover:bg-green-100 hover:text-green-700
-                        dark:hover:bg-green-900 dark:hover:text-green-200">
+                        text-gray-200
+                        hover:bg-green-800 hover:text-white">
                 <i class="fa-solid fa-calendar-xmark text-lg"></i>
                 <span x-show="!sidebarCollapsed" class="text-xl font-medium flex-1 text-left">
                     Expiry Management
@@ -253,9 +246,8 @@
         <div x-data="{ open: false }" class="relative">
             <button @click="open = !open"
                     class="w-full flex items-center gap-3 px-4 py-3 rounded-md transition
-                        text-gray-700 dark:text-gray-200
-                        hover:bg-green-100 hover:text-green-700
-                        dark:hover:bg-green-900 dark:hover:text-green-200">
+                        text-gray-200
+                        hover:bg-green-800 hover:text-white">
                 <i class="fa-solid fa-users text-lg"></i>
                 <span x-show="!sidebarCollapsed" class="text-xl font-medium flex-1 text-left">
                     Staff
@@ -304,9 +296,8 @@
         <div x-data="{ open: false }" class="relative">
             <button @click="open = !open"
                     class="w-full flex items-center gap-3 px-4 py-3 rounded-md transition
-                        text-gray-700 dark:text-gray-200
-                        hover:bg-green-100 hover:text-green-700
-                        dark:hover:bg-green-900 dark:hover:text-green-200">
+                        text-gray-200
+                        hover:bg-green-800 hover:text-white">
                 <i class="fa-solid fa-user-gear text-lg"></i>
                 <span x-show="!sidebarCollapsed" class="text-xl font-medium flex-1 text-left">
                     Users Management
@@ -337,9 +328,8 @@
         <div x-data="{ open: false }" class="relative">
             <button @click="open = !open"
                     class="w-full flex items-center gap-3 px-4 py-3 rounded-md transition
-                        text-gray-700 dark:text-gray-200
-                        hover:bg-green-100 hover:text-green-700
-                        dark:hover:bg-green-900 dark:hover:text-green-200">
+                        text-gray-200
+                        hover:bg-green-800 hover:text-white">
                 <i class="fa-solid fa-gear text-lg"></i>
                 <span x-show="!sidebarCollapsed" class="text-xl font-medium flex-1 text-left">
                     Settings

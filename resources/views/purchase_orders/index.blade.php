@@ -1,5 +1,13 @@
 @extends('layouts.app')
 
+@section('header')
+<div class="flex items-center justify-between">
+    <h2 class="font-semibold text-3xl text-gray-800 leading-tight">
+        Purchase Orders List
+    </h2>
+</div>
+@endsection
+
 @section('content')
 <div class="w-full mx-auto bg-white shadow rounded-lg p-6">
     <h2 class="text-3xl font-bold mb-4">Purchase Orders</h2>
