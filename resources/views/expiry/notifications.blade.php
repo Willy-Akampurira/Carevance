@@ -2,7 +2,7 @@
 
 @section('header')
 <div class="flex items-center justify-between">
-    <h2 class="font-semibold text-3xl text-gray-800 leading-tight">
+    <h2 class="font-semibold text-2xl sm:text-3xl text-gray-800 leading-tight">
         Expiry Notifications
     </h2>
 </div>
@@ -11,7 +11,6 @@
 @section('content')
 <div class="w-full mx-auto bg-white shadow rounded-lg p-6">
 
-    <!-- WhatsApp-like Search Bar -->
     <form id="searchForm" method="GET" action="{{ route('expiry.notifications') }}" class="mb-6">
         <div class="flex items-center bg-gray-100 rounded-lg px-3 py-2 shadow-sm">
             <i class="fas fa-search text-gray-500 mr-3 cursor-pointer"
@@ -20,18 +19,17 @@
             <input type="text" name="q" id="notificationSearchInput"
                    placeholder="Search drugs..."
                    value="{{ $q ?? '' }}"
-                   class="flex-1 bg-transparent border-none focus:ring-0 text-lg"
+                   class="flex-1 bg-transparent border-none focus:ring-0 text-sm sm:text-base"
                    onkeydown="if(event.key === 'Enter'){ event.preventDefault(); triggerNotificationSearch(); }">
         </div>
     </form>
 
-    <!-- Badge counts -->
     @php
         $expiredCount = $notifications->where('notification_type', 'expired')->count();
         $nearingCount = $notifications->where('notification_type', 'nearing')->count();
     @endphp
 
-    <div class="flex items-center gap-4 mb-4 text-lg">
+    <div class="flex items-center gap-4 mb-4 text-sm sm:text-base">
         <span class="px-3 py-1 rounded-full bg-red-100 text-red-700 font-semibold">
             Expired: {{ $expiredCount }}
         </span>
@@ -43,16 +41,14 @@
         </span>
     </div>
 
-    <!-- Threshold info -->
     <div class="mb-4 text-sm text-gray-600">
         Showing nearing expiry within <span class="font-semibold">{{ $thresholdDays }}</span> days, plus already expired.
     </div>
 
-    <!-- Notifications Table -->
     <div class="overflow-x-auto rounded border bg-white text-left">
         <table class="min-w-full">
             <thead class="bg-gray-50">
-                <tr class="text-lg">
+                <tr class="text-xs sm:text-sm font-semibold uppercase tracking-wider text-gray-600">
                     <th class="px-4 py-2">Drug</th>
                     <th class="px-4 py-2">Expiry Date</th>
                     <th class="px-4 py-2">Indicator</th>
@@ -60,14 +56,14 @@
                     <th class="px-4 py-2">Reorder Level</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="text-sm sm:text-base">
                 @forelse($notifications as $drug)
                     @php
                         $lot = $drug->stockLots()
                             ->orderBy('expiry_date')
                             ->first();
                     @endphp
-                    <tr class="border-t text-xl">
+                    <tr class="border-t">
                         <td class="px-4 py-2">{{ $drug->name }}</td>
                         <td class="px-4 py-2">
                             {{ $lot?->expiry_date?->format('d M Y') ?? '—' }}
@@ -78,7 +74,7 @@
                                     {{ $drug->days_since_expiry }} days ago
                                 </span>
                             @else
-                                <span class="px-2 py-1 rounded text-sm
+                                <span class="px-2 py-1 rounded text-xs
                                     @if(($drug->days_to_expiry ?? 0) <= 7) bg-red-100 text-red-700
                                     @elseif(($drug->days_to_expiry ?? 0) <= 14) bg-yellow-100 text-yellow-700
                                     @else bg-green-100 text-green-700 @endif">
@@ -97,7 +93,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" class="px-4 py-6 text-center text-xl text-gray-500">
+                        <td colspan="5" class="px-4 py-6 text-center text-sm sm:text-base text-gray-500">
                             No expiry notifications at the moment.
                         </td>
                     </tr>
@@ -106,13 +102,11 @@
         </table>
     </div>
 
-    <!-- Pagination -->
-    <div class="mt-4">
+    <div class="mt-4 text-sm sm:text-base">
         {{ $notifications->links() }}
     </div>
 </div>
 
-<!-- Search Script -->
 <script>
 function triggerNotificationSearch() {
     const query = document.getElementById('notificationSearchInput').value.trim();
