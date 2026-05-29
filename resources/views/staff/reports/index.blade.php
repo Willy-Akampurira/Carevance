@@ -1,49 +1,43 @@
 @extends('layouts.app')
 
 @section('header')
-<div class="flex items-center justify-between">
-    <h2 class="font-semibold text-3xl text-gray-800 leading-tight">Performance Reports</h2>
-</div>
+<h2 class="font-semibold text-2xl sm:text-3xl text-gray-800 leading-tight">Performance Reports</h2>
 @endsection
 
 @section('content')
 <div class="w-full mx-auto bg-white shadow rounded-lg p-6">
 
-    <!-- Include summary widget -->
     @include('staff.reports._summary')
 
-    <!-- Reports Table -->
-    <div class="overflow-x-auto mt-6">
-        <table class="min-w-full border border-gray-200 rounded">
+    <div class="overflow-x-auto mt-6 rounded border border-gray-200">
+        <table class="min-w-full">
             <thead class="bg-gray-100">
-                <tr class="text-2xl">
-                    <th class="px-4 py-2 text-left">Staff</th>
-                    <th class="px-4 py-2 text-left">Title</th>
-                    <th class="px-4 py-2 text-left">Total Hours</th>
-                    <th class="px-4 py-2 text-left">Period</th>
-                    <th class="px-4 py-2 text-left">Remarks</th>
-                    <th class="px-4 py-2 text-left">Generated</th>
-                    <th class="px-4 py-2 text-left">Created</th>
+                <tr class="text-xs sm:text-sm font-semibold uppercase tracking-wider text-gray-600 text-left">
+                    <th class="p-4">Staff</th>
+                    <th class="p-4">Title</th>
+                    <th class="p-4">Total Hours</th>
+                    <th class="p-4">Period</th>
+                    <th class="p-4">Remarks</th>
+                    <th class="p-4">Generated</th>
+                    <th class="p-4">Created</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="text-sm sm:text-base divide-y divide-gray-200">
                 @forelse($reports as $report)
-                    <tr class="border-t text-xl">
-                        <td class="px-4 py-2">{{ $report->staff->name }}</td>
-                        <td class="px-4 py-2">{{ $report->title }}</td>
-                        <td class="px-4 py-2">{{ $report->total_hours }}</td>
-                        <td class="px-4 py-2">
+                    <tr>
+                        <td class="p-4">{{ $report->staff->name }}</td>
+                        <td class="p-4">{{ $report->title }}</td>
+                        <td class="p-4">{{ $report->total_hours }}</td>
+                        <td class="p-4 whitespace-nowrap">
                             {{ $report->period_start }} → {{ $report->period_end }}
                         </td>
-                        <td class="px-4 py-2">{{ $report->remarks ?? '—' }}</td>
-                        <td class="px-4 py-2">
-                            {{ $report->generated_by_system ? 'System' : 'Manual' }}
-                        </td>
-                        <td class="px-4 py-2">{{ $report->created_at->format('d M Y') }}</td>
+                        <td class="p-4">{{ $report->remarks ?? '—' }}</td>
+                        <td class="p-4">{{ $report->generated_by_system ? 'System' : 'Manual' }}</td>
+                        <td class="p-4 whitespace-nowrap">{{ $report->created_at->format('d M Y') }}</td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="px-4 py-6 text-center text-xl text-gray-500">
+                        <td colspan="7" class="p-6 text-center text-sm sm:text-base text-gray-500">
                             No performance reports generated yet.
                         </td>
                     </tr>
@@ -52,8 +46,7 @@
         </table>
     </div>
 
-    <!-- Pagination -->
-    <div class="mt-4">
+    <div class="mt-4 text-sm sm:text-base">
         {{ $reports->links() }}
     </div>
 </div>
