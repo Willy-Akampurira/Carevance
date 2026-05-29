@@ -1,84 +1,99 @@
+{{-- resources/views/suppliers/invoices/index.blade.php --}}
 @extends('layouts.app')
 
 @section('header')
-<div class="flex items-center justify-between">
-    <h2 class="font-semibold text-3xl text-gray-800 leading-tight">
-        Invoices — {{ $supplierId }}
+<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+    <h2 class="font-semibold text-2xl sm:text-3xl text-gray-800 leading-tight">
+        Invoices — #{{ $supplierId }}
     </h2>
     <a href="{{ route('suppliers.invoices.create', $supplierId) }}"
-       class="px-4 py-2 bg-green-600 text-white text-xl rounded hover:bg-green-700">
+       class="w-full sm:w-auto text-center px-4 py-2.5 bg-green-600 text-white font-medium text-sm sm:text-base rounded-md shadow hover:bg-green-700 active:scale-98 transition-all">
         + Add Invoice
     </a>
 </div>
 @endsection
 
 @section('content')
-<div class="w-full mx-auto bg-white shadow rounded-lg p-6">
-    <!-- Filters -->
-    <form method="GET" action="{{ route('suppliers.invoices.index', $supplierId) }}" class="flex flex-wrap items-center gap-2 mb-4">
-        <input type="text" name="search" value="{{ $search ?? '' }}" placeholder="Search invoice number..."
-               class="border rounded border-gray-300 px-3 py-2 w-64 text-xl focus:ring-green-500 focus:border-green-500">
-        <select name="status" class="border rounded text-xl border-gray-300 px-3 py-2 focus:ring-green-500 focus:border-green-500">
-            <option value="">All statuses</option>
-            @foreach(['unpaid','paid','partially_paid','cancelled'] as $st)
-                <option value="{{ $st }}" {{ ($status ?? '') === $st ? 'selected' : '' }}>
-                    {{ ucfirst($st) }}
-                </option>
-            @endforeach
-        </select>
-        <button class="px-4 py-2 bg-gray-700 text-white text-xl rounded hover:bg-gray-800">Apply</button>
+<div class="w-full mx-auto bg-white shadow rounded-lg p-4 sm:p-6">
+    
+    <form method="GET" action="{{ route('suppliers.invoices.index', $supplierId) }}" class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 mb-6">
+        <div class="flex-1 sm:max-w-xs">
+            <input type="text" name="search" value="{{ $search ?? '' }}" placeholder="Search invoice number..."
+                   class="w-full border rounded-md border-gray-300 px-3 py-2 text-sm sm:text-base focus:ring-green-500 focus:border-green-500 shadow-sm">
+        </div>
+        
+        <div class="w-full sm:w-48">
+            <select name="status" class="w-full border rounded-md border-gray-300 px-3 py-2 text-sm sm:text-base focus:ring-green-500 focus:border-green-500 shadow-sm">
+                <option value="">All statuses</option>
+                @foreach(['unpaid','paid','partially_paid','cancelled'] as $st)
+                    <option value="{{ $st }}" {{ ($status ?? '') === $st ? 'selected' : '' }}>
+                        {{ ucfirst(str_replace('_', ' ', $st)) }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+        
+        <button type="submit" class="w-full sm:w-auto px-5 py-2 bg-gray-700 text-white text-sm sm:text-base font-medium rounded-md hover:bg-gray-800 transition-colors shadow-sm">
+            Apply
+        </button>
     </form>
 
-    <!-- Success Alert -->
     @if(session('success'))
-        <div class="mb-4 p-3 bg-green-100 text-xl text-green-800 rounded">
+        <div class="mb-4 p-3 bg-green-50 border border-green-200 text-sm sm:text-base text-green-800 rounded-md shadow-sm">
             {{ session('success') }}
         </div>
     @endif
 
-    <!-- Invoices Table -->
-    <div class="overflow-x-auto">
-        <table class="min-w-full border border-gray-200 rounded">
-            <thead class="bg-gray-100">
-                <tr class="text-2xl">
-                    <th class="px-4 py-2 text-left">Invoice #</th>
-                    <th class="px-4 py-2 text-left">Date</th>
-                    <th class="px-4 py-2 text-left">Amount</th>
-                    <th class="px-4 py-2 text-left">Status</th>
-                    <th class="px-4 py-2 text-left">Notes</th>
-                    <th class="px-4 py-2 text-left">Actions</th>
+    <div class="w-full overflow-x-auto border border-gray-200 rounded-md shadow-sm">
+        <table class="min-w-full divide-y divide-gray-200 text-left whitespace-nowrap">
+            <thead class="bg-gray-50">
+                <tr class="text-xs sm:text-sm font-semibold uppercase tracking-wider text-gray-600">
+                    <th class="px-4 py-3">Invoice #</th>
+                    <th class="px-4 py-3">Date</th>
+                    <th class="px-4 py-3">Amount</th>
+                    <th class="px-4 py-3">Status</th>
+                    <th class="px-4 py-3">Notes</th>
+                    <th class="px-4 py-3">Actions</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="bg-white divide-y divide-gray-100 text-sm sm:text-base text-gray-700">
                 @forelse($invoices as $inv)
-                    <tr class="border-t text-xl">
-                        <td class="px-4 py-2">{{ $inv->invoice_number }}</td>
-                        <td class="px-4 py-2">{{ \Carbon\Carbon::parse($inv->invoice_date)->format('Y-m-d') }}</td>
-                        <td class="px-4 py-2">{{ number_format($inv->amount, 2) }}</td>
-                        <td class="px-4 py-2">
-                            <span class="px-2 py-1 rounded text-sm
-                                @if($inv->status === 'paid') bg-green-100 text-green-700
-                                @elseif($inv->status === 'partially_paid') bg-yellow-100 text-yellow-700
-                                @elseif($inv->status === 'cancelled') bg-red-100 text-red-700
-                                @else bg-gray-100 text-gray-700 @endif">
-                                {{ ucfirst($inv->status) }}
+                    <tr class="hover:bg-gray-50/70 transition-colors">
+                        <td class="px-4 py-3 font-mono font-medium text-gray-900">{{ $inv->invoice_number }}</td>
+                        <td class="px-4 py-3 text-gray-600">
+                            {{ $inv->invoice_date ? \Carbon\Carbon::parse($inv->invoice_date)->format('Y-m-d') : '—' }}
+                        </td>
+                        <td class="px-4 py-3 font-semibold text-gray-900">
+                            {{ number_format($inv->amount, 2) }}
+                        </td>
+                        <td class="px-4 py-3">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                                @if($inv->status === 'paid') bg-green-100 text-green-800
+                                @elseif($inv->status === 'partially_paid') bg-yellow-100 text-yellow-800
+                                @elseif($inv->status === 'cancelled') bg-red-100 text-red-800
+                                @else bg-gray-100 text-gray-800 @endif">
+                                {{ ucfirst(str_replace('_', ' ', $inv->status)) }}
                             </span>
                         </td>
-                        <td class="px-4 py-2">{{ $inv->notes ?? '—' }}</td>
-                        <td class="px-4 py-2 space-x-2">
-                            <a href="{{ route('suppliers.invoices.show', [$supplierId, $inv]) }}" class="text-blue-600 hover:underline">View</a>
-                            <a href="{{ route('suppliers.invoices.edit', [$supplierId, $inv]) }}" class="text-yellow-600 hover:underline">Edit</a>
+                        <td class="px-4 py-3 text-gray-500 max-w-xs truncate">{{ $inv->notes ?? '—' }}</td>
+                        <td class="px-4 py-3 text-sm font-medium space-x-2">
+                            <a href="{{ route('suppliers.invoices.show', [$supplierId, $inv]) }}" class="text-blue-600 hover:text-blue-900 hover:underline">View</a>
+                            <a href="{{ route('suppliers.invoices.edit', [$supplierId, $inv]) }}" class="text-yellow-600 hover:text-yellow-900 hover:underline">Edit</a>
+                            
                             <form action="{{ route('suppliers.invoices.destroy', [$supplierId, $inv]) }}" method="POST" class="inline"
-                                  onsubmit="return confirm('Delete this invoice?');">
-                                @csrf @method('DELETE')
-                                <button class="text-red-600 hover:underline">Delete</button>
+                                  onsubmit="return confirm('Are you sure you want to delete this invoice record?');">
+                                @csrf 
+                                @method('DELETE')
+                                <button type="submit" class="text-red-600 hover:text-red-900 hover:underline focus:outline-none">
+                                    Delete
+                                </button>
                             </form>
                         </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="px-4 py-6 text-center text-xl text-gray-500">
-                            No invoices found.
+                        <td colspan="6" class="px-4 py-8 text-center text-sm sm:text-base text-gray-500 bg-gray-50/50">
+                            No specific invoices or transaction log indices located inside this registry dashboard.
                         </td>
                     </tr>
                 @endforelse
@@ -86,7 +101,10 @@
         </table>
     </div>
 
-    <!-- Pagination -->
-    <div class="mt-4">{{ $invoices->links() }}</div>
+    @if($invoices->hasPages())
+        <div class="mt-4 pt-2">
+            {{ $invoices->links() }}
+        </div>
+    @endif
 </div>
 @endsection
