@@ -1,60 +1,78 @@
+{{-- resources/views/drugs/old_stock.blade.php --}}
 @extends('layouts.app')
 
 @section('header')
-<div class="flex items-center justify-between">
-    <h2 class="font-semibold text-3xl text-gray-800 leading-tight">
-        Old Stock
+<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+    <h2 class="font-semibold text-2xl sm:text-3xl text-gray-800 leading-tight">
+        Old Stock Batches
     </h2>
 </div>
 @endsection
 
 @section('content')
-<div class="w-full mx-auto bg-white shadow rounded-lg p-6">
+<div class="w-full mx-auto bg-white shadow rounded-lg p-4 sm:p-6 space-y-4">
 
-    <!-- Alerts -->
     @if(session('success'))
-        <div class="mb-4 p-3 bg-green-100 text-xl text-green-800 rounded">
+        <div class="p-3 bg-green-50 border border-green-200 text-sm sm:text-base text-green-800 rounded-md shadow-sm">
             {{ session('success') }}
         </div>
     @endif
 
-    <!-- Old Stock Table -->
-    <div class="overflow-x-auto">
-        <table class="min-w-full border border-gray-200 rounded">
-            <thead class="bg-gray-100">
-                <tr class="text-2xl">
-                    <th class="px-4 py-2 text-left">Drug Name</th>
-                    <th class="px-4 py-2 text-left">Category</th>
-                    <th class="px-4 py-2 text-left">Quantity</th>
-                    <th class="px-4 py-2 text-left">Unit</th>
-                    <th class="px-4 py-2 text-left">Expiry Date</th>
-                    <th class="px-4 py-2 text-left">Reorder Level</th>
-                    <th class="px-4 py-2 text-left">Status</th>
+    <div class="w-full overflow-x-auto border border-gray-200 rounded-md shadow-sm">
+        <table class="min-w-full divide-y divide-gray-200 text-left whitespace-nowrap">
+            <thead class="bg-gray-50">
+                <tr class="text-xs sm:text-sm font-semibold uppercase tracking-wider text-gray-600">
+                    <th class="px-4 py-3">Drug Name</th>
+                    <th class="px-4 py-3">Category</th>
+                    <th class="px-4 py-3">Quantity</th>
+                    <th class="px-4 py-3">Unit</th>
+                    <th class="px-4 py-3">Expiry Date</th>
+                    <th class="px-4 py-3">Reorder Level</th>
+                    <th class="px-4 py-3 text-right">Status</th>
                 </tr>
             </thead>
-            <tbody>
-                @forelse($stockLots as $lot)
-                    @if($lot->quantity > 0) <!-- Hide exhausted lots -->
-                        <tr class="border-t text-xl">
-                            <td class="px-4 py-2">{{ $lot->drug?->name ?? $lot->name }}</td>
-                            <td class="px-4 py-2">{{ $lot->drug?->category?->name ?? '—' }}</td>
-                            <td class="px-4 py-2">{{ $lot->quantity }}</td>
-                            <td class="px-4 py-2">{{ $lot->unit }}</td>
-                            <td class="px-4 py-2">
-                                {{ $lot->expiry_date ? \Carbon\Carbon::parse($lot->expiry_date)->format('d M Y') : '—' }}
-                            </td>
-                            <td class="px-4 py-2">{{ $lot->reorder_level }}</td>
-                            <td class="px-4 py-2">
-                                <span class="px-2 py-1 rounded text-sm bg-gray-200 text-gray-700">
-                                    {{ ucfirst($lot->status) }}
+            <tbody class="bg-white divide-y divide-gray-100 text-sm sm:text-base text-gray-700">
+                @php
+                    // Filter down to active, unexhausted lots to prevent layout rendering artifacts
+                    $activeLots = $stockLots->filter(fn($lot) => $lot->quantity > 0);
+                @endphp
+
+                @forelse($activeLots as $lot)
+                    <tr class="hover:bg-gray-50/70 transition-colors">
+                        <td class="px-4 py-3 font-medium text-gray-900">
+                            {{ $lot->drug?->name ?? $lot->name }}
+                        </td>
+                        <td class="px-4 py-3 text-gray-500">
+                            {{ $lot->drug?->category?->name ?? '—' }}
+                        </td>
+                        <td class="px-4 py-3 font-mono text-gray-900 font-semibold">
+                            {{ $lot->quantity }}
+                        </td>
+                        <td class="px-4 py-3 text-gray-500 uppercase text-xs font-semibold">
+                            {{ $lot->unit ?? $lot->drug?->unit }}
+                        </td>
+                        <td class="px-4 py-3 text-gray-600">
+                            @if($lot->expiry_date)
+                                <span class="{{ \Carbon\Carbon::parse($lot->expiry_date)->isPast() ? 'text-red-600 font-bold' : '' }}">
+                                    {{ \Carbon\Carbon::parse($lot->expiry_date)->format('d M Y') }}
                                 </span>
-                            </td>
-                        </tr>
-                    @endif
+                            @else
+                                <span class="text-gray-400">—</span>
+                            @endif
+                        </td>
+                        <td class="px-4 py-3 font-mono text-gray-500">
+                            {{ $lot->reorder_level ?? $lot->drug?->reorder_level ?? '—' }}
+                        </td>
+                        <td class="px-4 py-3 text-right">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border bg-gray-100 border-gray-200 text-gray-700">
+                                {{ ucfirst($lot->status ?? 'Old') }}
+                            </span>
+                        </td>
+                    </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="px-4 py-6 text-center text-xl text-gray-500">
-                            No old stock available.
+                        <td colspan="7" class="px-4 py-8 text-center text-sm sm:text-base text-gray-500 bg-gray-50/50">
+                            No older stock or batch assignments available within active inventory parameters.
                         </td>
                     </tr>
                 @endforelse
@@ -62,7 +80,10 @@
         </table>
     </div>
 
-    <!-- Pagination -->
-    <div class="mt-4">{{ $stockLots->links() }}</div>
+    @if($stockLots->hasPages())
+        <div class="pt-2 border-t border-gray-100 text-sm sm:text-base">
+            {{ $stockLots->links() }}
+        </div>
+    @endif
 </div>
 @endsection
