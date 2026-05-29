@@ -1,17 +1,20 @@
+{{-- resources/views/drugs/categories/create.blade.php --}}
 @extends('layouts.app')
 
 @section('header')
-    <h2 class="font-semibold text-3xl text-gray-800 leading-tight">
+<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+    <h2 class="font-semibold text-2xl sm:text-3xl text-gray-800 leading-tight">
         Add New Category
     </h2>
+</div>
 @endsection
 
 @section('content')
-<div class="w-full mx-auto bg-white shadow rounded-lg p-6 text-xl">
+<div class="w-full mx-auto bg-white shadow rounded-lg p-4 sm:p-6 space-y-6">
 
     @if ($errors->any())
-        <div class="mb-4 p-4 bg-red-100 text-red-800 rounded">
-            <ul class="list-disc pl-5">
+        <div class="p-3 bg-red-50 border border-red-200 text-red-800 rounded-md shadow-sm">
+            <ul class="list-disc pl-5 space-y-1 text-sm sm:text-base">
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
                 @endforeach
@@ -22,27 +25,31 @@
     <form action="{{ route('drugs.categories.store') }}" method="POST" class="space-y-6">
         @csrf
 
-        <div>
-            <label for="name" class="block font-medium text-gray-700">Category Name</label>
-            <input type="text" name="name" id="name"
-                   value="{{ old('name') }}"
-                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
-                   required>
+        <div class="space-y-4">
+            <div>
+                <label for="name" class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Category Name</label>
+                <input type="text" name="name" id="name"
+                       value="{{ old('name') }}"
+                       placeholder="e.g. Antibiotics, Analgesics"
+                       class="w-full rounded-md border-gray-300 text-sm sm:text-base px-3 py-2.5 focus:ring-green-500 focus:border-green-500 shadow-sm"
+                       required>
+            </div>
+
+            <div>
+                <label for="description" class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Description</label>
+                <textarea name="description" id="description" rows="4"
+                          placeholder="Provide a brief clinical classification description or storage guidelines..."
+                          class="w-full rounded-md border-gray-300 text-sm sm:text-base px-3 py-2 focus:ring-green-500 focus:border-green-500 shadow-sm">{{ old('description') }}</textarea>
+            </div>
         </div>
 
-        <div>
-            <label for="description" class="block font-medium text-gray-700">Description</label>
-            <textarea name="description" id="description" rows="4"
-                      class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500">{{ old('description') }}</textarea>
-        </div>
-
-        <div class="flex justify-end space-x-3">
+        <div class="pt-4 border-t border-gray-100 flex flex-col-reverse sm:flex-row justify-end gap-3">
             <a href="{{ route('drugs.categories.index') }}"
-               class="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700">
-               Cancel
+               class="w-full sm:w-auto text-center px-6 py-2.5 bg-gray-100 border border-gray-300 text-gray-700 font-medium text-sm sm:text-base rounded-md hover:bg-gray-200 transition-colors">
+                Cancel
             </a>
             <button type="submit"
-                    class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
+                    class="w-full sm:w-auto text-center px-6 py-2.5 bg-green-600 text-white font-medium text-sm sm:text-base rounded-md shadow hover:bg-green-700 active:scale-98 transition-all duration-150">
                 Save Category
             </button>
         </div>
