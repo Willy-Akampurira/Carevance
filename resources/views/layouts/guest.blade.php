@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}"
+      class="text-[13.5px] lg:text-sm"> {{-- MATCHES THE CHOSEN APP BASELINE SCALING --}}
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -26,23 +27,24 @@
              background-position: center;
              background-attachment: fixed;">
     
-    <div class="min-h-screen flex flex-col justify-between items-center px-4 py-8 bg-gray-900 bg-opacity-60 overflow-y-auto">
+    <div class="min-h-screen flex flex-col justify-between items-center px-4 py-6 bg-gray-900 bg-opacity-60 overflow-y-auto">
         
-        <div class="flex justify-center items-center mt-2">
+        <div class="flex justify-center items-center mt-1">
             <a href="/">
                 <img src="{{ asset('storage/' . (\App\Models\Setting::where('setting_key','clinic_logo')->value('value') ?? 'logo.png')) }}" 
                      alt="{{ \App\Models\Setting::where('setting_key','clinic_name')->value('value') ?? 'Supreme Clinic' }} Logo" 
-                     class="w-24 h-24 sm:w-32 sm:h-32 object-contain drop-shadow-md">
+                     class="w-20 h-20 sm:w-28 sm:h-28 object-contain drop-shadow-md">
             </a>
         </div>
 
-        <div class="w-full flex flex-col items-center justify-center my-6 space-y-6">
+        <div class="w-full flex flex-col items-center justify-center my-4 space-y-4">
             
-            <div class="w-full sm:max-w-md px-6 py-6 bg-white bg-opacity-95 shadow-xl rounded-xl backdrop-blur-sm">
+            <div class="w-full sm:max-w-md px-6 py-5 bg-white bg-opacity-95 shadow-xl rounded-xl backdrop-blur-sm">
                 {{ $slot }}
             </div>
 
-            <div class="w-full max-w-md space-y-2 text-sm sm:text-base text-gray-100 text-center px-2">
+            {{-- Scaled down contact text container to match new base layouts seamlessly --}}
+            <div class="w-full max-w-md space-y-1.5 text-xs sm:text-sm text-gray-100 text-center px-2">
                 <p class="flex items-center justify-center gap-2 flex-wrap">
                     <i class="fas fa-map-marker-alt text-red-500"></i> 
                     <span>{{ \App\Models\Setting::where('setting_key','clinic_address')->value('value') ?? 'Mbarara, Uganda' }}</span>
@@ -62,8 +64,8 @@
             </div>
         </div>
 
-        <footer class="w-full max-w-2xl mt-auto pt-4 border-t border-gray-700 border-opacity-40 text-center space-y-3">
-            <div class="flex items-center justify-center gap-6 text-xl">
+        <footer class="w-full max-w-2xl mt-auto pt-3 border-t border-gray-700 border-opacity-40 text-center space-y-2">
+            <div class="flex items-center justify-center gap-5 text-lg">
                 <a href="{{ \App\Models\Setting::where('setting_key','facebook_url')->value('value') ?? '#' }}" 
                    class="text-blue-400 hover:text-blue-300 transition-colors" target="_blank" rel="noopener">
                     <i class="fab fa-facebook"></i>
@@ -78,7 +80,7 @@
                 </a>
             </div>
 
-            <p class="text-xs text-gray-300 leading-relaxed px-4">
+            <p class="text-[11px] text-gray-300 leading-relaxed px-4">
                 &copy; {{ date('Y') }} 
                 {{ \App\Models\Setting::where('setting_key','clinic_name')->value('value') ?? 'Supreme-Clinic' }}. 
                 {{ \App\Models\Setting::where('setting_key','footer_text')->value('value') ?? 'All Rights Reserved.' }}

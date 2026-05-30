@@ -1,7 +1,4 @@
-<aside x-bind:class="sidebarCollapsed ? 'w-20' : 'w-72'"
-       class="fixed top-0 left-0 h-screen bg-gray-900 text-white shadow-lg z-50 transition-all duration-300 ease-in-out flex flex-col overflow-auto">
-
-   <!-- Logo Section -->
+    <!-- Logo Section -->
     <div class="p-4 flex items-center justify-center">
         <img src="{{ asset('storage/' . \App\Models\Setting::getValue('clinic_logo', 'logo.png')) }}"
             alt="{{ \App\Models\Setting::getValue('clinic_name', 'Supreme Clinic') }} Logo"
@@ -385,4 +382,4 @@
             <span x-show="!sidebarCollapsed" class="text-lg">{{ Auth::user()->name ?? 'Guest' }}</span>
         </div>
     </div>
-</aside>
+
