@@ -13,7 +13,7 @@
     <nav class="mt-6 space-y-2 text-base font-medium flex-1">
         <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-4 py-2 hover:bg-green-800">
             <i class="fa-solid fa-house text-lg"></i>
-            <span x-show="!sidebarCollapsed" class="text-xl font-medium">Dashboard</span>
+            <span x-show="!sidebarCollapsed" class="text-lg font-medium">Dashboard</span>
         </a>
 
         <!-- Patients Sidebar Dropdown -->
@@ -24,7 +24,7 @@
                         text-gray-200
                         hover:bg-green-800 hover:text-white">
                 <i class="fa-solid fa-user-injured text-lg"></i>
-                <span x-show="!sidebarCollapsed" class="text-xl font-medium flex-1 text-left">
+                <span x-show="!sidebarCollapsed" class="text-lg font-medium flex-1 text-left">
                     Patients
                 </span>
                 <i x-show="!sidebarCollapsed" 
@@ -37,7 +37,7 @@
                 {{-- Register Patient → admin, doctor, staff --}}
                 @hasanyrole('admin|doctor|staff')
                     <a href="{{ route('patients.create') }}" 
-                    class="block px-4 py-2 text-lg rounded-md text-gray-600 hover:bg-green-50">
+                    class="block px-4 py-2 text-l rounded-md text-gray-600 hover:bg-green-50">
                         Register Patient
                     </a>
                 @endhasanyrole
@@ -45,7 +45,7 @@
                 {{-- Patient List → admin, doctor, staff --}}
                 @hasanyrole('admin|doctor|staff')
                     <a href="{{ route('patients.index') }}" 
-                    class="block px-4 py-2 text-lg rounded-md text-gray-600 hover:bg-green-50">
+                    class="block px-4 py-2 text-l rounded-md text-gray-600 hover:bg-green-50">
                         Patient List
                     </a>
                 @endhasanyrole
@@ -53,7 +53,7 @@
                 {{-- Reports → admin, doctor, staff --}}
                 @hasanyrole('admin|doctor|staff')
                     <a href="{{ route('patients.reports') }}" 
-                    class="block px-4 py-2 text-lg rounded-md text-gray-600 hover:bg-green-50">
+                    class="block px-4 py-2 text-l rounded-md text-gray-600 hover:bg-green-50">
                         Reports
                     </a>
                 @endhasanyrole
@@ -68,7 +68,7 @@
         <a href="{{ route('patients.appointments') }}" 
         class="flex items-center gap-3 px-4 py-2 hover:bg-green-800">
             <i class="fa-solid fa-calendar-check text-lg"></i>
-            <span x-show="!sidebarCollapsed" class="text-xl font-medium">Appointments</span>
+            <span x-show="!sidebarCollapsed" class="text-lg font-medium">Appointments</span>
         </a>
         @endhasanyrole
 
@@ -77,7 +77,7 @@
         <a href="{{ route('patients.prescriptions') }}" 
         class="flex items-center gap-3 px-4 py-2 hover:bg-green-800">
             <i class="fa-solid fa-prescription-bottle-medical text-lg"></i>
-            <span x-show="!sidebarCollapsed" class="text-xl font-medium">Prescriptions</span>
+            <span x-show="!sidebarCollapsed" class="text-lg font-medium">Prescriptions</span>
         </a>
         @endhasanyrole
 
@@ -86,7 +86,7 @@
         <a href="{{ route('patients.records') }}" 
         class="flex items-center gap-3 px-4 py-2 hover:bg-green-800">
             <i class="fa-solid fa-file-medical text-lg"></i>
-            <span x-show="!sidebarCollapsed" class="text-xl font-medium">Medical Records</span>
+            <span x-show="!sidebarCollapsed" class="text-lg font-medium">Medical Records</span>
         </a>
         @endhasanyrole
 
@@ -95,7 +95,7 @@
         <a href="{{ route('patients.billing') }}" 
         class="flex items-center gap-3 px-4 py-2 hover:bg-green-800">
             <i class="fa-solid fa-file-invoice-dollar text-lg"></i>
-            <span x-show="!sidebarCollapsed" class="text-xl font-medium">Billing & Insurance</span>
+            <span x-show="!sidebarCollapsed" class="text-lg font-medium">Billing & Insurance</span>
         </a>
         @endhasanyrole
 
@@ -107,7 +107,7 @@
                         text-gray-200
                         hover:bg-green-800 hover:text-white">
                 <i class="fa-solid fa-truck text-lg"></i>
-                <span x-show="!sidebarCollapsed" class="text-xl font-medium flex-1 text-left">
+                <span x-show="!sidebarCollapsed" class="text-lg font-medium flex-1 text-left">
                     Suppliers
                 </span>
                 <i x-show="!sidebarCollapsed" 
@@ -116,12 +116,12 @@
             </button>
 
             <div x-show="open && !sidebarCollapsed" x-transition class="mt-1 ml-10 space-y-1">
-                <a href="{{ route('suppliers.create') }}" class="block px-4 py-2 text-lg rounded-md text-gray-600 hover:bg-green-50">Add Supplier</a>
-                <a href="{{ route('suppliers.index') }}" class="block px-4 py-2 text-lg rounded-md text-gray-600 hover:bg-green-50">Supplier List</a>
-                <a href="{{ route('suppliers.po.create', 1) }}" class="block px-4 py-2 text-lg rounded-md text-gray-600 hover:bg-green-50">Purchase Orders</a>
-                <a href="{{ route('suppliers.deliveries.index', 1) }}" class="block px-4 py-2 text-lg rounded-md text-gray-600 hover:bg-green-50">Deliveries</a>
-                <a href="{{ route('suppliers.invoices.index', 1) }}" class="block px-4 py-2 text-lg rounded-md text-gray-600 hover:bg-green-50">Invoices</a>
-                <a href="{{ route('suppliers.invoices.payments.index', [1,1]) }}" class="block px-4 py-2 text-lg rounded-md text-gray-600 hover:bg-green-50">Payments</a>
+                <a href="{{ route('suppliers.create') }}" class="block px-4 py-2 text-l rounded-md text-gray-600 hover:bg-green-50">Add Supplier</a>
+                <a href="{{ route('suppliers.index') }}" class="block px-4 py-2 text-l rounded-md text-gray-600 hover:bg-green-50">Supplier List</a>
+                <a href="{{ route('suppliers.po.create', 1) }}" class="block px-4 py-2 text-l rounded-md text-gray-600 hover:bg-green-50">Purchase Orders</a>
+                <a href="{{ route('suppliers.deliveries.index', 1) }}" class="block px-4 py-2 text-l rounded-md text-gray-600 hover:bg-green-50">Deliveries</a>
+                <a href="{{ route('suppliers.invoices.index', 1) }}" class="block px-4 py-2 text-l rounded-md text-gray-600 hover:bg-green-50">Invoices</a>
+                <a href="{{ route('suppliers.invoices.payments.index', [1,1]) }}" class="block px-4 py-2 text-l rounded-md text-gray-600 hover:bg-green-50">Payments</a>
             </div>
         </div>
         @endhasanyrole
@@ -134,7 +134,7 @@
                         text-gray-200
                         hover:bg-green-800 hover:text-white">
                 <i class="fa-solid fa-pills text-lg"></i>
-                <span x-show="!sidebarCollapsed" class="text-xl font-medium flex-1 text-left">
+                <span x-show="!sidebarCollapsed" class="text-lg font-medium flex-1 text-left">
                     Drugs
                 </span>
                 <i x-show="!sidebarCollapsed" 
@@ -144,15 +144,15 @@
 
             <div x-show="open && !sidebarCollapsed" x-transition class="mt-1 ml-10 space-y-1">
                 <a href="{{ route('drugs.categories.index') }}" 
-                class="block px-4 py-2 text-lg rounded-md text-gray-600 hover:bg-green-50">
+                class="block px-4 py-2 text-l rounded-md text-gray-600 hover:bg-green-50">
                 Categories
                 </a>
                 <a href="{{ route('drugs.create') }}" 
-                class="block px-4 py-2 text-lg rounded-md text-gray-600 hover:bg-green-50">
+                class="block px-4 py-2 text-l rounded-md text-gray-600 hover:bg-green-50">
                 Add Drug
                 </a>
                 <a href="{{ route('drugs.index') }}" 
-                class="block px-4 py-2 text-lg rounded-md text-gray-600 hover:bg-green-50">
+                class="block px-4 py-2 text-l rounded-md text-gray-600 hover:bg-green-50">
                 Drugs List
                 </a>
             </div>
@@ -167,7 +167,7 @@
                         text-gray-200
                         hover:bg-green-800 hover:text-white">
                 <i class="fa-solid fa-boxes-stacked text-lg"></i>
-                <span x-show="!sidebarCollapsed" class="text-xl font-medium flex-1 text-left">
+                <span x-show="!sidebarCollapsed" class="text-lg font-medium flex-1 text-left">
                     Stock Management
                 </span>
                 <i x-show="!sidebarCollapsed" 
@@ -178,19 +178,19 @@
             <div x-show="open && !sidebarCollapsed" x-transition class="mt-1 ml-10 space-y-1">
                 <!-- New Stock -->
                 <a href="{{ route('stock.new') }}" 
-                class="block px-4 py-2 text-lg rounded-md text-gray-600 hover:bg-green-50">
+                class="block px-4 py-2 text-l rounded-md text-gray-600 hover:bg-green-50">
                 New Stock
                 </a>
 
                 <!-- Old Stock -->
                 <a href="{{ route('stock.old') }}" 
-                class="block px-4 py-2 text-lg rounded-md text-gray-600 hover:bg-green-50">
+                class="block px-4 py-2 text-l rounded-md text-gray-600 hover:bg-green-50">
                 Old Stock
                 </a>
 
                 <!-- Stock Adjustment -->
                 <a href="{{ route('stock.adjustment') }}" 
-                class="block px-4 py-2 text-lg rounded-md text-gray-600 hover:bg-green-50">
+                class="block px-4 py-2 text-l rounded-md text-gray-600 hover:bg-green-50">
                 Stock Adjustment
                 </a>
             </div>
@@ -205,7 +205,7 @@
                         text-gray-200
                         hover:bg-green-800 hover:text-white">
                 <i class="fa-solid fa-calendar-xmark text-lg"></i>
-                <span x-show="!sidebarCollapsed" class="text-xl font-medium flex-1 text-left">
+                <span x-show="!sidebarCollapsed" class="text-lg font-medium flex-1 text-left">
                     Expiry Management
                 </span>
                 <i x-show="!sidebarCollapsed" 
@@ -216,25 +216,25 @@
             <div x-show="open && !sidebarCollapsed" x-transition class="mt-1 ml-10 space-y-1">
                 <!-- Set Expiry Threshold -->
                 <a href="{{ route('expiry.threshold') }}" 
-                class="block px-4 py-2 text-lg rounded-md text-gray-600 hover:bg-green-50">
+                class="block px-4 py-2 text-l rounded-md text-gray-600 hover:bg-green-50">
                 Set Expiry Threshold
                 </a>
 
                 <!-- Nearing Expiry Drugs -->
                 <a href="{{ route('expiry.nearing') }}" 
-                class="block px-4 py-2 text-lg rounded-md text-gray-600 hover:bg-green-50">
+                class="block px-4 py-2 text-l rounded-md text-gray-600 hover:bg-green-50">
                 Nearing Expiry Drugs
                 </a>
 
                 <!-- Expired Drugs -->
                 <a href="{{ route('expiry.expired') }}" 
-                class="block px-4 py-2 text-lg rounded-md text-gray-600 hover:bg-green-50">
+                class="block px-4 py-2 text-l rounded-md text-gray-600 hover:bg-green-50">
                 Expired Drugs
                 </a>
 
                 <!-- Expiry Notifications -->
                 <a href="{{ route('expiry.notifications') }}" 
-                class="block px-4 py-2 text-lg rounded-md text-gray-600 hover:bg-green-50">
+                class="block px-4 py-2 text-l rounded-md text-gray-600 hover:bg-green-50">
                 Expiry Notifications
                 </a>
             </div>
@@ -249,7 +249,7 @@
                         text-gray-200
                         hover:bg-green-800 hover:text-white">
                 <i class="fa-solid fa-users text-lg"></i>
-                <span x-show="!sidebarCollapsed" class="text-xl font-medium flex-1 text-left">
+                <span x-show="!sidebarCollapsed" class="text-lg font-medium flex-1 text-left">
                     Staff
                 </span>
                 <i x-show="!sidebarCollapsed" 
@@ -260,31 +260,31 @@
             <div x-show="open && !sidebarCollapsed" x-transition class="mt-1 ml-10 space-y-1">
                 <!-- Staff Management -->
                 <a href="{{ route('staff.index') }}" 
-                class="block px-4 py-2 text-lg rounded-md text-gray-600 hover:bg-green-50">
+                class="block px-4 py-2 text-l rounded-md text-gray-600 hover:bg-green-50">
                 Staff Management
                 </a>
 
                 <!-- Departments -->
                 <a href="{{ route('staff.departments.index') }}" 
-                class="block px-4 py-2 text-lg rounded-md text-gray-600 hover:bg-green-50">
+                class="block px-4 py-2 text-l rounded-md text-gray-600 hover:bg-green-50">
                 Departments
                 </a>
 
                 <!-- Activity Logs -->
                 <a href="{{ route('staff.logs') }}" 
-                class="block px-4 py-2 text-lg rounded-md text-gray-600 hover:bg-green-50">
+                class="block px-4 py-2 text-l rounded-md text-gray-600 hover:bg-green-50">
                 Activity Logs
                 </a>
 
                 <!-- Shift & Attendance -->
                 <a href="{{ route('staff.attendance.index') }}" 
-                class="block px-4 py-2 text-lg rounded-md text-gray-600 hover:bg-green-50">
+                class="block px-4 py-2 text-l rounded-md text-gray-600 hover:bg-green-50">
                 Shift & Attendance
                 </a>
 
                 <!-- Performance Reports -->
                 <a href="{{ route('staff.reports.index') }}" 
-                class="block px-4 py-2 text-lg rounded-md text-gray-600 hover:bg-green-50">
+                class="block px-4 py-2 text-l rounded-md text-gray-600 hover:bg-green-50">
                 Performance Reports
                 </a>
             </div>
@@ -299,7 +299,7 @@
                         text-gray-200
                         hover:bg-green-800 hover:text-white">
                 <i class="fa-solid fa-user-gear text-lg"></i>
-                <span x-show="!sidebarCollapsed" class="text-xl font-medium flex-1 text-left">
+                <span x-show="!sidebarCollapsed" class="text-lg font-medium flex-1 text-left">
                     Users Management
                 </span>
                 <i x-show="!sidebarCollapsed" 
@@ -310,13 +310,13 @@
             <div x-show="open && !sidebarCollapsed" x-transition class="mt-1 ml-10 space-y-1">
                 <!-- Add User -->
                 <a href="{{ route('users.create') }}" 
-                class="block px-4 py-2 text-lg rounded-md text-gray-600 hover:bg-green-50">
+                class="block px-4 py-2 text-l rounded-md text-gray-600 hover:bg-green-50">
                 Add User
                 </a>
 
                 <!-- Users List -->
                 <a href="{{ route('users.index') }}" 
-                class="block px-4 py-2 text-lg rounded-md text-gray-600 hover:bg-green-50">
+                class="block px-4 py-2 text-l rounded-md text-gray-600 hover:bg-green-50">
                 Users List
                 </a>
             </div>
@@ -331,7 +331,7 @@
                         text-gray-200
                         hover:bg-green-800 hover:text-white">
                 <i class="fa-solid fa-gear text-lg"></i>
-                <span x-show="!sidebarCollapsed" class="text-xl font-medium flex-1 text-left">
+                <span x-show="!sidebarCollapsed" class="text-lg font-medium flex-1 text-left">
                     Settings
                 </span>
                 <i x-show="!sidebarCollapsed" 
@@ -342,25 +342,25 @@
             <div x-show="open && !sidebarCollapsed" x-transition class="mt-1 ml-10 space-y-1">
                 <!-- Clinic Information -->
                 <a href="{{ route('settings.clinic') }}" 
-                class="block px-4 py-2 text-lg rounded-md text-gray-600 hover:bg-green-50">
+                class="block px-4 py-2 text-l rounded-md text-gray-600 hover:bg-green-50">
                     Clinic Information
                 </a>
 
                 <!-- Invoice Settings -->
                 <a href="{{ route('settings.invoice') }}" 
-                class="block px-4 py-2 text-lg rounded-md text-gray-600 hover:bg-green-50">
+                class="block px-4 py-2 text-l rounded-md text-gray-600 hover:bg-green-50">
                     Invoice Settings
                 </a>
 
                 <!-- Theme Settings -->
                 <a href="{{ route('settings.theme') }}" 
-                class="block px-4 py-2 text-lg rounded-md text-gray-600 hover:bg-green-50">
+                class="block px-4 py-2 text-l rounded-md text-gray-600 hover:bg-green-50">
                     Theme Settings
                 </a>
 
                 <!-- Footer Settings -->
                 <a href="{{ route('settings.footer') }}" 
-                class="block px-4 py-2 text-lg rounded-md text-gray-600 hover:bg-green-50">
+                class="block px-4 py-2 text-l rounded-md text-gray-600 hover:bg-green-50">
                     Footer Settings
                 </a>
             </div>
@@ -382,7 +382,7 @@
     <div class="p-4 border-t border-gray-700">
         <div class="flex items-center gap-3">
             <i class="fas fa-user-circle text-2xl"></i>
-            <span x-show="!sidebarCollapsed" class="text-xl">{{ Auth::user()->name ?? 'Guest' }}</span>
+            <span x-show="!sidebarCollapsed" class="text-lg">{{ Auth::user()->name ?? 'Guest' }}</span>
         </div>
     </div>
 </aside>
