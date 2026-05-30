@@ -2,12 +2,11 @@
 
 @section('header')
 <div class="flex items-center justify-between">
-    <h2 class="font-semibold text-3xl text-gray-800 leading-tight">Trashed Users</h2> 
+    <h2 class="font-semibold text-2xl sm:text-3xl text-gray-800 leading-tight">Trashed Users</h2> 
 
     <div class="flex space-x-3">
-        <!-- Back to Users List -->
         <a href="{{ route('users.index') }}" 
-           class="px-4 py-2 bg-gray-600 text-white text-xl rounded hover:bg-gray-700">
+           class="px-4 py-2 bg-gray-600 text-white text-sm sm:text-base rounded hover:bg-gray-700">
             Back to Users List
         </a>
     </div>
@@ -17,14 +16,12 @@
 @section('content')
 <div class="w-full mx-auto bg-white shadow rounded-lg p-6">
 
-    <!-- Alerts -->
     @if(session('success'))
-        <div class="mb-4 p-3 bg-green-100 text-xl text-green-800 rounded">
+        <div class="mb-4 p-3 bg-green-100 text-sm sm:text-base text-green-800 rounded">
             {{ session('success') }}
         </div>
     @endif
 
-    <!-- WhatsApp-like Search Bar -->
     <div class="flex items-center mb-6 bg-gray-100 rounded-lg px-3 py-2 shadow-sm">
         <i class="fas fa-search text-gray-500 mr-3 cursor-pointer"
            onclick="triggerTrashSearch()"></i>
@@ -32,38 +29,35 @@
         <input type="text" id="trashSearchInput"
                placeholder="Search trashed users..."
                value="{{ request('search') ?? '' }}"
-               class="flex-1 bg-transparent border-none focus:ring-0 text-lg"
+               class="flex-1 bg-transparent border-none focus:ring-0 text-sm sm:text-base"
                onkeydown="if(event.key === 'Enter'){ triggerTrashSearch(); }">
     </div>
 
-    <!-- Trashed Users Table -->
-    <div class="overflow-x-auto">
-        <table class="min-w-full border border-gray-200 rounded">
+    <div class="overflow-x-auto rounded border border-gray-200">
+        <table class="min-w-full">
             <thead class="bg-gray-100">
-                <tr class="text-2xl">
-                    <th class="px-4 py-2 text-left">Name</th>
-                    <th class="px-4 py-2 text-left">Email</th>
-                    <th class="px-4 py-2 text-left">Role</th>
-                    <th class="px-4 py-2 text-left">Deleted At</th>
-                    <th class="px-4 py-2 text-left">Actions</th>
+                <tr class="text-xs sm:text-sm font-semibold uppercase tracking-wider text-gray-600 text-left">
+                    <th class="p-4">Name</th>
+                    <th class="p-4">Email</th>
+                    <th class="p-4">Role</th>
+                    <th class="p-4">Deleted At</th>
+                    <th class="p-4">Actions</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="text-sm sm:text-base divide-y divide-gray-200">
                 @forelse($users as $user)
-                    <tr class="border-t text-xl">
-                        <td class="px-4 py-2">{{ $user->name }}</td>
-                        <td class="px-4 py-2">{{ $user->email }}</td>
-                        <td class="px-4 py-2">{{ $user->roles->pluck('name')->implode(', ') ?? '—' }}</td>
-                        <td class="px-4 py-2">{{ $user->deleted_at }}</td>
-                        <td class="px-4 py-2 space-x-3">
-                            <!-- Restore -->
-                            <form action="{{ route('users.restore',$user->id) }}" method="POST" class="inline">
+                    <tr>
+                        <td class="p-4 whitespace-nowrap">{{ $user->name }}</td>
+                        <td class="p-4 whitespace-nowrap">{{ $user->email }}</td>
+                        <td class="p-4 whitespace-nowrap">{{ $user->roles->pluck('name')->implode(', ') ?? '—' }}</td>
+                        <td class="p-4 whitespace-nowrap">{{ $user->deleted_at }}</td>
+                        <td class="p-4 whitespace-nowrap space-x-3">
+                            <form action="{{ route('users.restore', $user->id) }}" method="POST" class="inline">
                                 @csrf @method('PATCH')
                                 <button class="text-blue-600 hover:underline">Restore</button>
                             </form>
 
-                            <!-- Force Delete -->
-                            <form action="{{ route('users.forceDelete',$user->id) }}" method="POST" class="inline"
+                            <form action="{{ route('users.forceDelete', $user->id) }}" method="POST" class="inline"
                                   onsubmit="return confirm('Permanently delete this user?');">
                                 @csrf @method('DELETE')
                                 <button class="text-red-700 hover:underline">Force Delete</button>
@@ -72,7 +66,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" class="px-4 py-6 text-center text-xl text-gray-500">
+                        <td colspan="5" class="p-6 text-center text-sm sm:text-base text-gray-500">
                             No trashed users found.
                         </td>
                     </tr>
@@ -81,11 +75,11 @@
         </table>
     </div>
 
-    <!-- Pagination -->
-    <div class="mt-4">{{ $users->links() }}</div>
+    <div class="mt-4 text-sm sm:text-base">
+        {{ $users->links() }}
+    </div>
 </div>
 
-<!-- Search Script -->
 <script>
 function triggerTrashSearch() {
     const query = document.getElementById('trashSearchInput').value.trim();
