@@ -79,7 +79,7 @@
                             <div class="flex justify-end items-center gap-2">
                                 @if($lot->drug)
                                     <a href="{{ route('drugs.edit', $lot->drug->id) }}"
-                                       class="px-2.5 py-1 rounded border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 transition-colors text-xs sm:text-sm shadow-sm">
+                                       class="px-2.5 py-1 rounded border border-gray-300 text-yellow-600 bg-white hover:bg-gray-50 transition-colors text-xs sm:text-sm shadow-sm">
                                         Edit
                                     </a>
 
