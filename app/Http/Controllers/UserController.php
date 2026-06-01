@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Password;
 
 class UserController extends Controller
 {
@@ -37,26 +38,31 @@ class UserController extends Controller
     }
 
     /**
-     * Store a newly created user in storage with role assignment.
+     * Store a newly created user in storage with role assignment and send activation link.
      */
     public function store(Request $request)
     {
+        // ✅ Rectified validation: Admin only inputs email and assigns a Spatie role
         $validated = $request->validate([
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|email|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-            'role'     => 'required|string|exists:roles,name',
+            'email' => 'required|email|unique:users,email',
+            'role'  => 'required|string|exists:roles,name',
         ]);
 
+        // ✅ Creates the user with a blank password and sets them to inactive
         $user = User::create([
-            'name'     => $validated['name'],
-            'email'    => $validated['email'],
-            'password' => bcrypt($validated['password']),
+            'name'      => null,  // Will be set by the employee during activation
+            'email'     => $validated['email'],
+            'password'  => null,  // Kept null until they choose their own password
+            'is_active' => false, // Locked until account activation process is completed
         ]);
 
+        // Assign Spatie Role
         $user->assignRole($validated['role']);
 
-        return redirect()->route('users.index')->with('success', 'User added successfully with role.');
+        // ✅ Fire Laravel's native token broker to dispatch the secure activation email
+        Password::broker()->sendResetLink(['email' => $user->email]);
+
+        return redirect()->route('users.index')->with('success', 'Staff account created successfully! An activation link has been sent to their email.');
     }
 
     /**
