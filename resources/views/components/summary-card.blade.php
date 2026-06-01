@@ -13,12 +13,12 @@
     $c = $colors[$accent] ?? $colors['gray'];
 @endphp
 
-<div class="w-full rounded-xl border {{ $c }} p-5 flex items-center gap-5 shadow-sm">
+<div class="w-full rounded-lg border {{ $c }} p-5 flex items-center gap-5 shadow-sm">
     <div class="shrink-0">
-        <i class="{{ $icon }} text-4xl"></i>
+        <i class="{{ $icon }} text-3xl"></i>
     </div>
     <div class="flex flex-col">
-        <span class="text-xl font-semibold">{{ $label }}</span>
-        <span class="text-3xl font-bold">{{ $value }}</span>
+        <span class="text-lg font-semibold">{{ $label }}</span>
+        <span class="text-2xl font-bold">{{ $value }}</span>
     </div>
 </div>

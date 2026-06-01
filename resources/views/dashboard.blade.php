@@ -9,7 +9,7 @@
             Welcome Back, {{ Auth::user()->name ?? 'Admin User' }}
         </span>
         <button @click="showBanner = false" 
-                class="text-gray-400 hover:text-green-900 transition text-lg" 
+                class="text-gray-400 hover:text-green-900 transition text-sm sm:text-base" 
                 title="Dismiss">
             <i class="fas fa-times"></i>
         </button>
