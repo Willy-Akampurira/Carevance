@@ -1,4 +1,4 @@
-    <!-- Logo Section -->
+<!-- Logo Section -->
     <div class="p-4 flex items-center justify-center">
         <img src="{{ asset('storage/' . \App\Models\Setting::getValue('clinic_logo', 'logo.png')) }}"
             alt="{{ \App\Models\Setting::getValue('clinic_name', 'Supreme Clinic') }} Logo"
@@ -363,23 +363,32 @@
             </div>
         </div>
         @endhasanyrole
-
-         <!-- {{-- Backup & Restore → admin only --}}
-        @hasanyrole('admin')
-        <a href="{{ route('settings.backup.page') }}" 
-        class="flex items-center gap-3 px-4 py-2 hover:bg-green-800">
-            <i class="fa-solid fa-database text-lg"></i>
-            <span x-show="!sidebarCollapsed" class="text-xl font-medium">Backup & Restore</span>
-        </a>
-        @endhasanyrole -->
         
     </nav>
 
     <!-- Profile Section -->
     <div class="p-4 border-t border-gray-700">
-        <div class="flex items-center gap-3">
-            <i class="fas fa-user-circle text-2xl"></i>
-            <span x-show="!sidebarCollapsed" class="text-lg">{{ Auth::user()->name ?? 'Guest' }}</span>
+        <div class="flex items-center justify-between gap-2">
+            <!-- Left Side Identity Group -->
+            <div class="flex items-center gap-3 min-w-0">
+                <i class="fas fa-user-circle text-2xl text-gray-400 flex-shrink-0"></i>
+                <span x-show="!sidebarCollapsed" class="text-lg truncate font-medium text-gray-200">
+                    {{ Auth::user()->name ?? 'Guest' }}
+                </span>
+            </div>
+            
+            <!-- Right Side Interactive Logout Button -->
+            <div class="flex items-center flex-shrink-0">
+                <form id="sidebar-logout-form" method="POST" action="{{ route('logout') }}" class="hidden">
+                    @csrf
+                </form>
+
+                <button type="submit" 
+                        form="sidebar-logout-form"
+                        class="text-gray-400 hover:text-red-500 transition-colors duration-200 focus:outline-none p-1 rounded hover:bg-gray-800"
+                        title="Log Out">
+                    <i class="fa-solid fa-right-from-bracket text-lg"></i>
+                </button>
+            </div>
         </div>
     </div>
-
