@@ -2,18 +2,21 @@
 
 namespace App\Models;
 
+use App\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Model;
-
-// Import related models
 use App\Models\PurchaseOrder;
 use App\Models\Drug;
 
 class PurchaseOrderItem extends Model
 {
+    use BelongsToTenant;
+
     /**
      * The attributes that are mass assignable.
      */
     protected $fillable = [
+        'tenant_id',
+        'branch_id',
         'purchase_order_id',
         'drug_id',
         'description',

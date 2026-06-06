@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Patient;
@@ -9,11 +10,13 @@ use App\Models\Appointment;
 
 class MedicalRecord extends Model
 {
-    use HasFactory;
+    use HasFactory, BelongsToTenant;
 
     protected $table = 'medical_records';
 
     protected $fillable = [
+        'tenant_id',
+        'branch_id',
         'patient_id',
         'appointment_id',
         'diagnosis',

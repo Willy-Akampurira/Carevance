@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -10,12 +11,14 @@ use App\Models\PurchaseOrderItem;
 
 class Supplier extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, BelongsToTenant;
 
     /**
      * The attributes that are mass assignable.
      */
     protected $fillable = [
+        'tenant_id',
+        'branch_id',
         'name',
         'contact_person',
         'phone',

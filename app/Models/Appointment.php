@@ -2,17 +2,20 @@
 
 namespace App\Models;
 
+use App\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Patient;        // Import Patient model for relationship
-use App\Models\Prescription;   // Import Prescription model for relationship
-use App\Models\MedicalRecord;  // Import MedicalRecord model for relationship
+use App\Models\Patient;
+use App\Models\Prescription;
+use App\Models\MedicalRecord;
 
 class Appointment extends Model
 {
-    use HasFactory;
+    use HasFactory, BelongsToTenant;
 
     protected $fillable = [
+        'tenant_id',
+        'branch_id',
         'patient_id',
         'doctor',
         'scheduled_at',

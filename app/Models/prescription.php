@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Appointment;
@@ -11,15 +12,17 @@ use App\Models\StockLot;
 
 class Prescription extends Model
 {
-    use HasFactory;
+    use HasFactory, BelongsToTenant;
 
     protected $table = 'prescriptions';
 
     protected $fillable = [
+        'tenant_id',
+        'branch_id',
         'appointment_id',
         'patient_id',
         'drug_id',
-        'lot_id',          // ✅ link to specific stock lot
+        'lot_id',
         'dosage',
         'frequency',
         'duration_days',
@@ -30,7 +33,7 @@ class Prescription extends Model
         'category',
         'renewal_requested',
         'notes',
-        'quantity',        // ✅ prescribed quantity for auto-deduction
+        'quantity',
     ];
 
     protected $casts = [

@@ -25,6 +25,14 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         View::composer('layouts.app', function ($view) {
+            if (!app()->bound('currentTenant')) {
+                $view->with([
+                    'lowStockCount' => 0,
+                    'expiryCount' => 0,
+                ]);
+                return;
+            }
+
             // Low stock count
             $lowStockCount = StockLot::with('drug')
                 ->whereHas('drug', function ($query) {

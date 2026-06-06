@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Patient;
@@ -10,15 +11,17 @@ use App\Models\Payment;
 
 class FinancialRecord extends Model
 {
-    use HasFactory;
+    use HasFactory, BelongsToTenant;
 
     protected $table = 'financial_records';
 
     protected $fillable = [
+        'tenant_id',
+        'branch_id',
         'patient_id',
         'invoice_number',
         'invoice_date',
-        'amount',              // grand total
+        'amount',
         'status',
         'insurance_provider',
         'claim_number',

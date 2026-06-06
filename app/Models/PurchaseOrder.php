@@ -2,16 +2,19 @@
 
 namespace App\Models;
 
+use App\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Supplier;
-use App\Models\PurchaseOrderItem;   
+use App\Models\PurchaseOrderItem;
 
 class PurchaseOrder extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, BelongsToTenant;
 
     protected $fillable = [
+        'tenant_id',
+        'branch_id',
         'supplier_id',
         'order_number',
         'order_date',

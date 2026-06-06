@@ -2,11 +2,10 @@
 
 namespace App\Models;
 
+use App\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
-// Import related models
 use App\Models\Prescription;
 use App\Models\PurchaseOrderItem;
 use App\Models\DrugCategory;
@@ -15,9 +14,11 @@ use App\Models\StockAdjustment;
 
 class Drug extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, BelongsToTenant;
 
     protected $fillable = [
+        'tenant_id',
+        'branch_id',
         'name',
         'category_id',
         'unit',

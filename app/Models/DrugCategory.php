@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Drug;
@@ -9,7 +10,7 @@ use App\Models\StockLot;
 
 class DrugCategory extends Model
 {
-    use HasFactory;
+    use HasFactory, BelongsToTenant;
 
     // Allow mass assignment for these fields
     protected $fillable = [

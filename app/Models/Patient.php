@@ -2,21 +2,24 @@
 
 namespace App\Models;
 
+use App\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\Appointment;    // Import Appointment model for relationship
-use App\Models\Prescription;   // Import Prescription model for relationship
-use App\Models\MedicalRecord;  // Import MedicalRecord model for relationship
+use App\Models\Appointment;
+use App\Models\Prescription;
+use App\Models\MedicalRecord;
 
 class Patient extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, BelongsToTenant;
 
     /**
      * The attributes that are mass assignable.
      */
     protected $fillable = [
+        'tenant_id',
+        'branch_id',
         'name',
         'gender',
         'dob',
@@ -24,7 +27,7 @@ class Patient extends Model
         'email',
         'address',
         'medical_history',
-        'entry_date',   // ✅ new field for backdating patient entry
+        'entry_date',
     ];
 
     /**
