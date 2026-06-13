@@ -14,11 +14,36 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\BackupRestoreController;
+use App\Http\Controllers\SuperadminController;
 
 // Supplier module controllers
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\SupplierInvoiceController;
+
+// =============================================================================
+// SUPERADMIN SUBDOMAIN CONTROL PANEL
+// Accessible only at: superadmin.carevance.test
+// Protected by 'auth' + 'superadmin' (RequireSuperadmin → Spatie hasRole check)
+// =============================================================================
+Route::domain('superadmin.' . parse_url(config('app.url'), PHP_URL_HOST))
+    ->middleware(['web', 'auth', 'superadmin'])
+    ->name('superadmin.')
+    ->group(function () {
+        Route::get('/', [SuperadminController::class, 'dashboard'])->name('dashboard');
+
+        Route::prefix('tenants')->name('tenants.')->group(function () {
+            Route::get('/', [SuperadminController::class, 'index'])->name('index');
+            Route::get('/create', [SuperadminController::class, 'create'])->name('create');
+            Route::post('/', [SuperadminController::class, 'store'])->name('store');
+            Route::get('/{id}', [SuperadminController::class, 'show'])->name('show');
+            Route::post('/{id}/toggle-status', [SuperadminController::class, 'toggleStatus'])->name('toggle-status');
+        });
+    });
+
+// =============================================================================
+// MAIN PLATFORM LANDING & TENANT APP ROUTES
+// =============================================================================
 
 Route::get('/', function () {
     return view('welcome');

@@ -14,12 +14,23 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // Create roles
-        $adminRole = Role::firstOrCreate(['name' => 'admin']);
-        $staffRole = Role::firstOrCreate(['name' => 'staff']);
+        $superAdminRole = Role::firstOrCreate(['name' => 'superadmin']);
+        $adminRole      = Role::firstOrCreate(['name' => 'admin']);
+        $staffRole      = Role::firstOrCreate(['name' => 'staff']);
         $pharmacistRole = Role::firstOrCreate(['name' => 'pharmacist']);
-        $doctorRole = Role::firstOrCreate(['name' => 'doctor']);
+        $doctorRole     = Role::firstOrCreate(['name' => 'doctor']);
 
         // Create users and assign roles
+        User::firstOrCreate([
+            'email' => 'superadmin@carevance.com',
+        ], [
+            'name' => 'Super Admin',
+            'password' => bcrypt('password'),
+            'tenant_id' => null,
+            'branch_id' => null,
+            'is_active' => true,
+        ])->assignRole($superAdminRole);
+
         User::factory()->create([
             'name' => 'Admin User',
             'email' => 'admin@carevance.com',

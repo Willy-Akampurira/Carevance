@@ -6,8 +6,8 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use App\Models\StockLot;
 use App\Models\Drug;
-use Illuminate\Support\Carbon;
 use App\Models\Setting;
+use Illuminate\Support\Carbon;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -25,6 +25,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         View::composer('layouts.app', function ($view) {
+            // ── 1. Tenant Safeguard Guard ──────────────────────────────────────
+            // If no tenant context is resolved yet (e.g. landing page or setup routing),
+            // bypass queries completely and inject defaults to prevent SQL crashes.
             if (!app()->bound('currentTenant')) {
                 $view->with([
                     'lowStockCount' => 0,
@@ -33,20 +36,23 @@ class AppServiceProvider extends ServiceProvider
                 return;
             }
 
-            // Low stock count
-            $lowStockCount = StockLot::with('drug')
-                ->whereHas('drug', function ($query) {
+            // ── 2. Tenant-Scoped Low Stock Count ───────────────────────────────
+            // Under multi-tenancy, BelongsToTenant automatically hooks into both StockLot
+            // and Drug queries to pull metrics exclusively for the current tenant.
+            $lowStockCount = StockLot::whereHas('drug', function ($query) {
                     $query->whereColumn('stock_lots.quantity', '<=', 'drugs.reorder_level');
                 })
                 ->count();
 
-            // Expiry notifications count (nearing + expired)
+            // ── 3. Dynamic Threshold Calculation ──────────────────────────────
+            // Fetches setting records scoped strictly to the current tenant clinic.
             $thresholdDays = (int) (Setting::where('setting_key', 'expiry_threshold')->value('value')
                 ?? config('inventory.expiry_threshold', 30));
 
             $today     = Carbon::today();
             $dateLimit = $today->copy()->addDays($thresholdDays);
 
+            // ── 4. Expiry Metrics Processing ──────────────────────────────────
             $nearingCount = Drug::whereDate('expiry_date', '>=', $today)
                 ->whereDate('expiry_date', '<=', $dateLimit)
                 ->count();
@@ -55,7 +61,7 @@ class AppServiceProvider extends ServiceProvider
 
             $expiryCount = $nearingCount + $expiredCount;
 
-            // Share globally
+            // ── 5. Global View Composer Registration ──────────────────────────
             $view->with(compact('lowStockCount', 'expiryCount'));
         });
     }

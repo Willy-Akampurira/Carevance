@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Config;
+
 /*
 |--------------------------------------------------------------------------
 | Test Case
@@ -7,12 +10,15 @@
 |
 | The closure you provide to your test functions is always bound to a specific PHPUnit test
 | case class. By default, that class is "PHPUnit\Framework\TestCase". Of course, you may
-| need to change it using the "pest()" function to bind a different classes or traits.
+| need to change it using the "uses()" function to bind a different classes or traits.
 |
 */
 
-pest()->extend(Tests\TestCase::class)
-    ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
+uses(Tests\TestCase::class, RefreshDatabase::class)
+    ->beforeEach(function () {
+        // Automatically inject the tenant URL context across ALL feature tests globally
+        Config::set('app.url', 'http://carevance.test');
+    })
     ->in('Feature');
 
 /*

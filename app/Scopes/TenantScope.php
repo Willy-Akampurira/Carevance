@@ -28,11 +28,6 @@ class TenantScope implements Scope
      */
     public function apply(Builder $builder, Model $model): void
     {
-        // Do not scope queries in CLI (migrations, seeders, artisan commands)
-        if (app()->runningInConsole()) {
-            return;
-        }
-
         $tenantId = $this->resolveTenantId();
         $branchId = $this->resolveBranchId();
 
